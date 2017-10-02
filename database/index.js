@@ -90,6 +90,21 @@ const findInfoForAllRestaurants = () => {
   //get information for all restaurants
 };
 
+const addDummyData = () => {
+  Restaurant.findOrCreate({where: {name: 'Tempest', phone: '1234567890', queue_count: 0}})
+  .then(result => console.log('added/found restaurant to database'))
+  .catch(err => console.log('error adding restaurant to database', err));
+
+  Customer.findOrCreate({where: {name: 'Tiffany', mobile: '2345639762'}})
+  .then(result => console.log('added/found customer to database'))
+  .catch(err => console.log('error adding customer to database', err));
+
+  Customer.findOrCreate({where: {name: 'Neha', mobile: '7869874567'}});
+  Customer.findOrCreate({where: {name: 'Eugene', mobile: '9750978967'}});
+  Customer.findOrCreate({where: {name: 'Johnny', mobile: '4567305746'}});
+};
+
+addDummyData();
 
 
 
