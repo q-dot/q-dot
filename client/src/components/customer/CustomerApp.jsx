@@ -1,4 +1,6 @@
 import React from 'react';
+import CustomerNav from './CustomerNav.jsx';
+import GroupSizeButtons from './GroupSizeButtons.jsx';
 
 class CustomerApp extends React.Component {
   constructor(props) {
@@ -11,10 +13,8 @@ class CustomerApp extends React.Component {
   render() {
     return (
       <div className="customer-home">
-        <h1 className="logo-banner">q.</h1>
-        <div className="group-size-buttons-container">
-          <h2>buttons will go here</h2>
-        </div>
+        <CustomerNav />
+        <GroupSizeButtons />
       </div>
     )
   }
@@ -22,3 +22,4 @@ class CustomerApp extends React.Component {
 }
 
 export default CustomerApp;
+
