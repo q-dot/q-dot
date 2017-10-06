@@ -148,6 +148,42 @@ app.put('/queues', (req, res) => {
   }
 });
 
-app.listen(port, () => {
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
+
+// socket io cant use express listen
+// app.listen(port, () => {
+//   console.log(`(>^.^)> Server now listening on ${port}!`);
+// });
+
+let queueMap = {};
+
+io.on('connection', (socket) => {
+  console.log(`${socket.id} connected`);
+
+  socket.on('disconnect', () => {
+    console.log(`${socket.id} disconnected`);
+  });
+
+  //manager event
+  socket.on('manager report', (restaurantId) => {
+    console.log(`restaurantId: ${restaurantId} manager reporting with socket id: ${socket.id}`);
+  });
+
+  socket.on('noti customer', (queueId) => {
+    if (queueMap[queueId]) {
+      io.to(queueMap[queueId]).emit('noti', 'your table is ready!');
+    }
+  });
+
+  //customer event
+  socket.on('customer report', (queueId) => {
+    console.log(`queueId: ${queueId} customer reporting with socket id: ${socket.id}`);
+    queueMap[queueId] = socket.id;
+  });
+});
+

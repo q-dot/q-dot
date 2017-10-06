@@ -13,10 +13,8 @@ const CustomerListEntry = (props) => {
         <p>Wait Time: {props.queue.wait} mins</p>
       </div>
       <div className="col-md-3">
-        {props.index === 0 
-          ? <button className="btn-primary btn-sm" data-toggle="modal" data-target="#remove-warning">Remove</button>
-          : []
-        }
+        <button className="btn-primary btn-sm" data-toggle="modal" data-target="#remove-warning">Remove</button>
+        <button className="btn-success btn-sm" onClick={() => props.notiCustomer(props.queue.id)}>Noti</button>
         <div id="remove-warning" className="modal fade" role="dialog">
           <div className="modal-dialog">
             <div className="modal-content">
