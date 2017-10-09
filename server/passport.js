@@ -2,7 +2,7 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-
+const dbManagerQuery = require('../controller/manager.js');
 passport.use(new LocalStrategy(
   function(username, password, done) {
     dbQuery.getManagerInfo(username)
@@ -10,7 +10,8 @@ passport.use(new LocalStrategy(
         if (!user) {
           return done(null, false, { message: 'incorrect username' });
         }
-        if (user.password !== password) {
+        var inputPassword = dbManagerQuery.genPassword(password, user.passwordSalt);
+        if (user.passwordHash !== inputPassword.passwordHash) {
           return done(null, false, { message: 'incorrect password' });
         }
         return done(null, user);

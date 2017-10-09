@@ -389,6 +389,38 @@ Failed Request:
 418 - 'Unknown Error - Check customerId' (Unknown error)
 
 ```
+## /manager?username=[username]&password=[password]
+
+**To create a new manager account**
+
+POST request to /manager?username=[username]&password=[password] creates a new manager login in the database.
+
+Manager password is salted and hashed with SHA512.
+
+Example:
+
+```
+request.post('https://q-dot-staging.herokuapp.com/manager?username=johnnydepp&password=hunter3');
+
+//Response
+
+Successful Request:
+
+[
+    {
+        "id": 4,
+        "username": "johnnydepp",
+        "passwordHash": "c134906ac85b09f6cec023f4d158057fcb05f5f9de40aa5e4dd335cd618daccbe1828521813678be25b9f92e6378107282b7d9562d3b734b38d1634cc35eb904",
+        "passwordSalt": "29e080567e5b83345f42ae48ab3a373f",
+        "updatedAt": "2017-10-09T01:43:30.615Z",
+        "createdAt": "2017-10-09T01:43:30.615Z"
+    },
+    true
+]
+
+Failed Request:
+400 - 'Bad Request' (if username or password is not provided)
+```
 
 ## /dummydata
 
@@ -430,4 +462,12 @@ request.post('https://q-dot.herokuapp.com/dummydata');
     {customerId: 4, restaurantId: 2, position: 2, size: 4}
 ]
 
+1 Manager Account:
+
+[
+  {
+    username: 'johnny',
+    password: 'hunter2'
+  }
+]
 ```

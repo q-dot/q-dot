@@ -24,7 +24,8 @@ const addManager = () => {
   return db.Manager.findOrCreate({
     where: {
       username: 'johnny',
-      password: 'hunter2'
+      passwordHash: 'a48af21cebc18c880a2b9c53dd8b3fab483e26ff2b7b77dd9def2afe8305ff44b17f1b8d58e6106bb49570e602fde2b960e0e420d53874b2d8626016bbd97f83',
+      passwordSalt: '8b1269b13d1258b15af6c66f4f4d5cd9'
     }
   });
 };

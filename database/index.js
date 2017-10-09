@@ -29,7 +29,8 @@ const Manager = db.define('manager', {
     autoIncrement: true
   },
   username: Sequelize.STRING,
-  password: Sequelize.STRING
+  passwordHash: Sequelize.STRING,
+  passwordSalt: Sequelize.STRING
 });
 
 //Customer Schema
