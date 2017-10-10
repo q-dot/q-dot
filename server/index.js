@@ -152,6 +152,7 @@ app.get('/queues', (req, res) => {
     var results = {};
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
+        console.log('partialResults on server get: ', partialResults.costumer);
         results.name = partialResults.customer.name;
         results.mobile = partialResults.customer.mobile;
         results.email = partialResults.customer.email;

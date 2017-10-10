@@ -38,6 +38,7 @@ class QueueInfo extends React.Component {
       success: (data) => {
         console.log('successfully grabbed queue data for customer', data);
         this.setState({ currentCustomer: data });
+        console.log('this is the data: ', data);
         // report queueId to server socket
         this.socket.emit('customer report', id);
       },

@@ -11,6 +11,7 @@ class CustomerInfoForm extends React.Component {
     this.getLastName = this.getLastName.bind(this);
     this.getMobile = this.getMobile.bind(this);
     this.getEmail = this.getEmail.bind(this);
+    this.getAddress = this.getAddress.bind(this);
     this.submitCustomerInfo = this.submitCustomerInfo.bind(this);
     this.state = {
       groupSize: 0,
@@ -60,7 +61,7 @@ class CustomerInfoForm extends React.Component {
     });
   }
 
-  getLocation() {
+  getAddress(event) {
     this.setState({
       customerAddress: event.target.value
     });
@@ -76,7 +77,7 @@ class CustomerInfoForm extends React.Component {
       url: '../../queues',
       data: JSON.stringify({
         name: fullName,
-        address: this.state.customerLocation,
+        address: this.state.customerAddress,
         mobile: this.state.customerMobile,
         email: this.state.customerEmail,
         size: this.state.groupSize,
@@ -111,8 +112,8 @@ class CustomerInfoForm extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col s12">
-              <input id="email" type="email" className="validate" onChange={this.getLocation}/>
-              <label htmlFor="email" data-error="wrong" data-success="right">Current Location</label>
+              <input id="address" type="text" className="validate" onChange={this.getAddress}/>
+              <label htmlFor="address" data-error="wrong" data-success="right">Current Location</label>
             </div>
           </div>
           <div className="row">
