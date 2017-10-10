@@ -3,6 +3,7 @@ import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
+import { Link } from 'react-router-dom';
 
 class QueueInfo extends React.Component {
   constructor(props) {
@@ -57,6 +58,12 @@ class QueueInfo extends React.Component {
 
   clickedBack() {
     console.log('Go back');
+    $.get({
+      url: '/redirect',
+      success: () => {
+        window.location.href = "/customer";
+      }
+    });
   }
 
   render() {
@@ -66,8 +73,7 @@ class QueueInfo extends React.Component {
         <h5>YOUR QUEUE NUMBER IS</h5>
         {
           this.state.ready
-            ?
-              <h3 className="ready-noti">Your table is ready!</h3>
+            ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a></div>
             : <div className="queue-position-display">
               <span className="position-number">{this.state.currentCustomer.position}</span>
               <h6>your approximate wait time is:</h6>
