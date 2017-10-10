@@ -8,6 +8,7 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
 const dummyData = require('../database/dummydata.js');
+const testData = require('../database/testData.js');
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -240,6 +241,17 @@ app.delete('/manager/history', (req, res) => {
   } else {
     res.sendStatus(401);
   }
+});
+
+app.post('/restaurants', (req, res) => {
+  dbQuery.addRestaurant(testData.restaurant)
+  .then((results) => {
+    res.sendStatus(201);
+  })
+  .catch((err) => {
+    console.log('Error POST /restaurants ', err);
+    res.sendStatus(401);
+  });
 });
 
 server.listen(port, () => {
