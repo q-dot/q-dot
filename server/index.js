@@ -58,12 +58,22 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  console.log('Redirecting a customer');
   if (req.session.queueInfo) {
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
   }
 });
+
+app.get('/redirect', (req, res) => {
+  console.log('Redirect requested!', req.session);
+  req.session.destroy((err) => {
+    console.log('destroy session');
+    res.cookie('qsessionid', '', { expires: new Date() });
+    res.send('/customer');
+  });
+})
 
 //get info for one restaurant or all restaurants
 app.get('/restaurants', (req, res) => {
@@ -298,4 +308,3 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
-
