@@ -10,7 +10,7 @@ class QueueInfo extends React.Component {
     this.state = {
       currentCustomer: {
         restaurant: {
-          name:''
+          name: ''
         }
       },
       ready: false
