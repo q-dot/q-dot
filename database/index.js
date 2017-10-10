@@ -51,6 +51,7 @@ const Customer = db.define('customer', {
     autoIncrement: true
   },
   name: Sequelize.STRING,
+  address: Sequelize.STRING,
   mobile: {
     type: Sequelize.STRING,
     unique: true,
@@ -82,6 +83,7 @@ const Restaurant = db.define('restaurant', {
     autoIncrement: true
   },
   name: Sequelize.STRING,
+  address: Sequelize.STRING,
   phone: {
     type: Sequelize.STRING,
     unique: true,

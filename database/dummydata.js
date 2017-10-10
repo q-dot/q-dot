@@ -9,15 +9,15 @@ const addToQueue = () => {
 };
 
 const addRestaurants = () => {
-  return db.Restaurant.findOrCreate({where: {name: 'Tempest', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}})
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Burma Superstar', phone: '(415) 387-2147', image: '../images/burmasuperstar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'State Bird Provisions', phone: '(415) 795-1272', image: '../images/statebirdprovisions.jpg', status: 'Closed', 'average_wait': 8, 'total_wait': 8}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Limon Rotisserie', phone: '(415) 821-2134', image: '../images/limonrotisserie.jpg', status: 'Closed', 'average_wait': 12, 'total_wait': 12}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Nopa', phone: '(415) 864-8643', image: '../images/nopa.jpg', status: 'Open', 'average_wait': 20, 'total_wait': 20}}))
-    .then(() => db.Restaurant.findOrCreate({where: {name: 'Farmhouse Kitchen', phone: '(415) 814-2920', image: '../images/farmhousekitchen.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}));
+  return db.Restaurant.findOrCreate({where: {name: 'Tempest', address: '431 Natoma St, San Francisco, CA 94103', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}})
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', address: '1906 Van Ness Ave, San Francisco, CA 94109', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', address: '1306 Fulton St, San Francisco, CA 94117', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', address: '3499 16th St, San Francisco, CA 94114', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Burma Superstar', address: '309 Clement St, San Francisco, CA 94118', phone: '(415) 387-2147', image: '../images/burmasuperstar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'State Bird Provisions', address: '1529 Fillmore St, San Francisco, CA 94115', phone: '(415) 795-1272', image: '../images/statebirdprovisions.jpg', status: 'Closed', 'average_wait': 8, 'total_wait': 8}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Limon Rotisserie', address: '1001 S Van Ness Ave, San Francisco, CA 94110', phone: '(415) 821-2134', image: '../images/limonrotisserie.jpg', status: 'Closed', 'average_wait': 12, 'total_wait': 12}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Nopa', address: '560 Divisadero St, San Francisco, CA 94117', phone: '(415) 864-8643', image: '../images/nopa.jpg', status: 'Open', 'average_wait': 20, 'total_wait': 20}}))
+    .then(() => db.Restaurant.findOrCreate({where: {name: 'Farmhouse Kitchen', address: '710 Florida St, San Francisco, CA 94110', phone: '(415) 814-2920', image: '../images/farmhousekitchen.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}));
 };
 
 const addManager = () => {
