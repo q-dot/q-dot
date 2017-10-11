@@ -284,23 +284,29 @@ app.post('/restaurants', (req, res) => {
   });
 });
 
-app.get('/yelp', (req, res) => {
 // *** YELP ***
+app.post('/yelp', (req, res) => {
 
-  const getToken = yelp.accessToken(credentials.YELP_CLIENT_ID, credentials.YELP_SECRET).then(response => {
+  yelp.accessToken(credentials.YELP_CLIENT_ID, credentials.YELP_SECRET)
+  .then(response => {
     // console.log(response.jsonBody.access_token);
     token = response.jsonBody.access_token;
     client = yelp.client(token);
 
+    console.log(typeof req.body);
+    // console.log(typeof req.body.location);
     client.search({
-      term:'Four Barrel Coffee',
-      location: 'san francisco, ca'
-    }).then(response => {
-      console.log(response.jsonBody.businesses[0].name);
-    }).catch(e => {
+      term: req.body.query,
+      location: req.body.location
+    })
+    .then(result => {
+      res.send(result.jsonBody.businesses);
+    })
+    .catch(e => {
       console.log(e);
     });
-  }).catch(e => {
+  })
+  .catch(e => {
     console.log(e);
   });
 });

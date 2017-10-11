@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import ResultList from './ResultList.jsx';
 
 class CreateRestaurant extends React.Component {
   constructor() {
@@ -9,7 +10,8 @@ class CreateRestaurant extends React.Component {
       searchQuery: '',
       location: '',
       username: '',
-      password: ''
+      password: '',
+      results: []
     };
 
     this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -19,24 +21,24 @@ class CreateRestaurant extends React.Component {
 
   handleQueryChange(e) {
     this.setState({searchQuery: e.target.value});
-    console.log(this.state.searchQuery);
   }
 
   handleLocChange(e) {
     this.setState({location: e.target.value});
-    console.log(this.state.location);
   }
 
   submitSearch(e) {
     let options = {
       url: '../../yelp',
-      data: JSON.stringify({
-        query: this.state.searchQuery
-      })
+      method: 'POST',
+      data: {
+        query: this.state.searchQuery,
+        location: this.state.location
+      }
     }
 
     $.ajax(options)
-      .then((data) => {console.log(data)})
+      .then((data) => {this.setState({results: data})})
       .fail((data) => {console.log(data)});
   }
 
@@ -46,6 +48,8 @@ class CreateRestaurant extends React.Component {
         Restaurant Name: <input type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/>
         Restaurant Location: <input type="text" value={this.state.location} onChange={this.handleLocChange}/>
         <button onClick={this.submitSearch}>Submit</button> 
+         {this.state.results.length > 0 ? <ResultList results={this.state.results}/> : null}  
+
       </div>
     );
   }
