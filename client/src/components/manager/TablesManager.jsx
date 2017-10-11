@@ -60,24 +60,24 @@ class TablesManager extends React.Component {
   render () {
     return (
       <div>
-        <h3>Tables Manager</h3>
+        <h3>Select Table Size Available</h3>
         <div className="panel panel-default">
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>2-Seat</th>
-                  <th>4-Seat</th>
-                  <th>8-Seat</th>
+                  <th>2-Seats</th>
+                  <th>4-Seats</th>
+                  <th>8-Seats</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td></td>
-                  <td>{this.state.tables['2']}</td>
-                  <td>{this.state.tables['4']}</td>
-                  <td>{this.state.tables['8']}</td>
+                  <td><button className="btn-success btn-sm">2</button></td>
+                  <td><button className="btn-success btn-sm">4</button></td>
+                  <td><button className="btn-success btn-sm">8</button></td>
                 </tr>
               </tbody>
             </table>

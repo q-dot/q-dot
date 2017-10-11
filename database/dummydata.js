@@ -4,8 +4,12 @@ const dbQuery = require('../controller/index.js');
 const addToQueue = () => {
   return dbQuery.addToQueue({name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697'})
     .then(() => dbQuery.addToQueue({name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
-    .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 2, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
-    .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 2, size: 2, mobile: '4156844758'}));
+    .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 1, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
+    .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 1, size: 2, mobile: '4156844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Danny', restaurantId: 1, size: 4, mobile: '4156844758'}))
+    .then(() => dbQuery.addToQueue({name: 'ShiHao', restaurantId: 1, size: 2, mobile: '4156844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Rebecca', restaurantId: 1, size: 8, mobile: '4156844758'}))
+    .catch((err) => console.log('there was insertion err', err));
 };
 
 const addRestaurants = () => {
