@@ -34,6 +34,4 @@ managerApp-bundle.js
 queueinfo-bundle.js
 
 package-lock.json
-
-server/config.js
-
+server/config/config.js
