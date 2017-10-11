@@ -14,6 +14,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+const Nexmo = require('nexmo');
 
 const nodemailer = require('nodemailer');
 
@@ -43,6 +44,11 @@ let transporter = nodemailer.createTransport({
     user: configs.emailUsername + '@gmail.com',
     pass: configs.emailPass
   }
+});
+
+const nexmo = new Nexmo({
+  apiKey: configs.nexmoAPIKey,
+  apiSecret: configs.nexmoAPISecret
 });
 
 //these middlewares initialise passport and adds req.user to req object if user has aleady been authenticated
@@ -312,6 +318,13 @@ io.on('connection', (socket) => {
         text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
           + placeName + '\n\nBon Appétit,\nQ.'
       };
+
+      //Don't even try to text if it's not valid format with country code. only works for USA
+      let phoneToUse = helpers.filterPhoneForNexmo(customer.mobile);
+      console.log(phoneToUse, 'should get an SMS. It has length', phoneToUse.length);
+      if (phoneToUse.length === 11) {
+        helpers.sendSMS(nexmo, configs.virtualNumber, phoneToUse, placeName);
+      }
 
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
