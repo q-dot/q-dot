@@ -17,37 +17,37 @@ class QueueInfoMap extends React.Component {
       zoom: 1
     });
 
-    var geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken
-    });
+  //   var geocoder = new MapboxGeocoder({
+  //     accessToken: mapboxgl.accessToken
+  //   });
 
-    map.addControl(geocoder);
-    map.on('load', () => {
-      geocoder.query(this.props.client);
-      map.addSource('single-point', {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': []
-        }
-      });
+  //   map.addControl(geocoder);
+  //   map.on('load', () => {
+  //     geocoder.query(this.props.client);
+  //     map.addSource('single-point', {
+  //       'type': 'geojson',
+  //       'data': {
+  //         'type': 'FeatureCollection',
+  //         'features': []
+  //       }
+  //     });
 
-      map.addLayer({
-          "id": "point",
-          "source": "single-point",
-          "type": "circle",
-          "paint": {
-              "circle-radius": 3,
-              "circle-color": "#C70039"
-          }
-      });
+  //     map.addLayer({
+  //         "id": "point",
+  //         "source": "single-point",
+  //         "type": "circle",
+  //         "paint": {
+  //             "circle-radius": 3,
+  //             "circle-color": "#C70039"
+  //         }
+  //     });
 
-      // Listen for the `geocoder.input` event that is triggered when a user
-      // makes a selection and add a symbol that matches the result.
-      geocoder.on('result', function(ev) {
-          map.getSource('single-point').setData(ev.result.geometry);
-      });
-    });
+  //     // Listen for the `geocoder.input` event that is triggered when a user
+  //     // makes a selection and add a symbol that matches the result.
+  //     geocoder.on('result', function(ev) {
+  //         map.getSource('single-point').setData(ev.result.geometry);
+  //     });
+  //   });
   }    
 
   render() {
