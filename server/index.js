@@ -131,9 +131,11 @@ app.post('/dummydata', (req, res) => {
 //add a customer to the queue at a restaurant
 // this throws error 418
 app.post('/queues', (req, res) => {
+  
   console.log('POST to queues: ', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
+
     res.status(400).send('Bad Request');
   } else {
     dbQuery.addToQueue(req.body)
@@ -193,18 +195,6 @@ app.get('/queues', (req, res) => {
     var results = {};
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
-        /*
-        console.log('**********partialResults on server get: ', partialResults.customer);
-          partialResults on server get:  customer {
-            dataValues: 
-             { id: 5,
-               name: 'X Yz',
-               address: '1234 ewsa st, sf, ca',
-               mobile: '23454434',
-               email: 'lkko@oiin',
-               createdAt: 2017-10-11T00:16:44.934Z,
-               updatedAt: 2017-10-11T00:16:44.934Z },
-        */
         results.name = partialResults.customer.name;
         results.address = partialResults.customer.address;
         results.mobile = partialResults.customer.mobile;

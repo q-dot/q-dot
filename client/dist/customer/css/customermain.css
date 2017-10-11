@@ -8,6 +8,22 @@ body {
   background: #f4f7f9 !important;
 }
 
+.queue-body {
+  margin-top: 150px;
+  margin-left: 80px;
+}
+
+.queue-body, .queue-map {
+  display:inline;
+  float:left;
+}
+
+canvas {
+  width: '600px'; 
+  height: '600px';
+  float: center;
+}
+
 .materialize-red {
   background-color: #e51c23 !important;
 }
@@ -9860,7 +9876,7 @@ nav li a {
 .position-number {
   font-family: Roboto, Helvetica Neue, sans-serif !important;
   color: #053C5E;
-  font-size: 140px;
+  font-size: 100px;
   font-weight: 900;
 }
 
@@ -9980,3 +9996,8 @@ nav li a {
   line-height: 1 !important;
   left: 50%;
 }
+
+
+
+
+

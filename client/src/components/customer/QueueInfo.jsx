@@ -1,9 +1,11 @@
 import React from 'react';
 import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
+import QueueInfoMap from './QueueInfoMap.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
+
 
 class QueueInfo extends React.Component {
   constructor(props) {
@@ -70,17 +72,28 @@ class QueueInfo extends React.Component {
     return (
       <div className="customer-queue-info-container">
         <CustomerBanner customer={this.state.currentCustomer}/>
-        <h5>YOUR QUEUE NUMBER IS</h5>
-        {
-          this.state.ready
-            ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a></div>
-            : <div className="queue-position-display">
-              <span className="position-number">{this.state.currentCustomer.position}</span>
-              <h6>your approximate wait time is:</h6>
-              <span className="wait-time-indicator">{this.state.currentCustomer.wait}</span>
-              <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
-            </div>
-        }
+        <div className="queue-body">
+          <h5>YOUR QUEUE NUMBER IS</h5>
+          {
+            this.state.ready
+              ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a></div>
+              : <div className="queue-position-display">
+                <span className="position-number">{this.state.currentCustomer.position}</span>
+                <h6>your approximate wait time is:</h6>
+                <span className="wait-time-indicator">{this.state.currentCustomer.wait}</span>
+                <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
+              </div>
+          }
+        </div>  
+        <div className="queue-map">  
+          <br/>
+          <br/>
+          <QueueInfoMap client={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </div>  
       </div>
     );
   }
