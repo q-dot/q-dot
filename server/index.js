@@ -8,11 +8,16 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
 const dummyData = require('../database/dummydata.js');
+const testData = require('../database/testData.js');
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+
+const nodemailer = require('nodemailer');
+
+const configs = require('./config/config.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || '104.237.154.8',
+    host: process.env.REDISURL || '107.170.208.112',
     port: process.env.REDISPORT || 6379
   }),
   secret: process.env.SESSIONSECRET || 'nyancat',
@@ -30,6 +35,15 @@ app.use(session({
   name: 'qsessionid',
   resave: false
 }));
+
+//Set up node mailer
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: configs.emailUsername + '@gmail.com',
+    pass: configs.emailPass
+  }
+});
 
 //these middlewares initialise passport and adds req.user to req object if user has aleady been authenticated
 app.use(passport.initialize());
@@ -57,11 +71,21 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  console.log('Redirecting a customer');
   if (req.session.queueInfo) {
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
   }
+});
+
+app.get('/redirect', (req, res) => {
+  console.log('Redirect requested!', req.session);
+  req.session.destroy((err) => {
+    console.log('destroy session');
+    res.cookie('qsessionid', '', { expires: new Date() });
+    res.send('/customer');
+  });
 });
 
 //get info for one restaurant or all restaurants
@@ -152,6 +176,7 @@ app.get('/queues', (req, res) => {
     var results = {};
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
+        console.log('partialResults on server get: ', partialResults.costumer);
         results.name = partialResults.customer.name;
         results.mobile = partialResults.customer.mobile;
         results.email = partialResults.customer.email;
@@ -241,6 +266,17 @@ app.delete('/manager/history', (req, res) => {
   }
 });
 
+app.post('/restaurants', (req, res) => {
+  dbQuery.addRestaurant(testData.restaurant)
+  .then((results) => {
+    res.sendStatus(201);
+  })
+  .catch((err) => {
+    console.log('Error POST /restaurants ', err);
+    res.sendStatus(401);
+  });
+});
+
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
@@ -266,8 +302,25 @@ io.on('connection', (socket) => {
     managerMap[restaurantId] = socket.id;
   });
 
-  socket.on('noti customer', (queueId) => {
+  socket.on('noti customer', (queueId, placeName, customer) => {
     if (queueMap[queueId]) {
+      // console.log('A customer is to be notified for their booking at', placeName);
+      let mailOptions = {
+        from: configs.emailUsername + '@gmail.com',
+        to: customer.email,
+        subject: 'Your table booked at ' + placeName + ' is ready!',
+        text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
+          + placeName + '\n\nBon Appétit,\nQ.'
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
       io.to(queueMap[queueId]).emit('noti', 'your table is ready!');
     }
   });
@@ -285,4 +338,3 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
-
