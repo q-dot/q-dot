@@ -44,9 +44,10 @@ class ManagerApp extends React.Component {
     });
   }
 
-  notiCustomer(queueId) {
+  notiCustomer(queueId, customer) {
     console.log(`noti sended to queueId: ${queueId}`);
-    this.socket.emit('noti customer', queueId);
+    // console.log(this.state.restaurantInfo);
+    this.socket.emit('noti customer', queueId, this.state.restaurantInfo.name, customer);
   }
 
   addToQueue(customer) {

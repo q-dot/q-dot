@@ -16,7 +16,7 @@ const CustomerListEntry = (props) => {
       </div>
       <div className="col-md-5 row">
         <button className="btn-primary btn-sm entry-button" data-dismiss="modal" onClick={() => props.showModal(props.queue)}><i className="fa fa-user-times fa-fw" aria-hidden="true"></i>Remove</button>
-        <button className="btn-success btn-sm entry-button" onClick={() => props.notiCustomer(props.queue.id)}><i className="fa fa-bullhorn fa-fw" aria-hidden="true"></i>Ready </button>
+        <button className="btn-success btn-sm entry-button" onClick={() => props.notiCustomer(props.queue.id, props.queue.customer)}><i className="fa fa-bullhorn fa-fw" aria-hidden="true"></i>Ready </button>
       </div>
     </div>
   );
