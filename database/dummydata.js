@@ -9,7 +9,7 @@ const addToQueue = () => {
 };
 
 const addRestaurants = () => {
-  return db.Restaurant.findOrCreate({where: {name: 'Tempest', address: '431 Natoma St, San Francisco, CA 94103', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}})
+  return db.Restaurant.findOrCreate({where: {name: 'Tempest', address: '431 Natoma St, San Francisco, CA 94103', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'tables': JSON.stringify({'2': 4, '4': 6, '8': 8})}})
     .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', address: '1906 Van Ness Ave, San Francisco, CA 94109', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
     .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', address: '1306 Fulton St, San Francisco, CA 94117', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5}}))
     .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', address: '3499 16th St, San Francisco, CA 94114', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}))
