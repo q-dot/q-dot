@@ -6,14 +6,14 @@ const addToQueue = () => {
     .then(() => dbQuery.addToQueue({name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
     .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 1, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
     .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 1, size: 2, mobile: '4156844758'}))
-    .then(() => dbQuery.addToQueue({name: 'Danny', restaurantId: 1, size: 4, mobile: '4156844758'}))
-    .then(() => dbQuery.addToQueue({name: 'ShiHao', restaurantId: 1, size: 2, mobile: '4156844758'}))
-    .then(() => dbQuery.addToQueue({name: 'Rebecca', restaurantId: 1, size: 8, mobile: '4156844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Danny', restaurantId: 1, size: 4, mobile: '4166844758'}))
+    .then(() => dbQuery.addToQueue({name: 'ShiHao', restaurantId: 1, size: 2, mobile: '4576844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Rebecca', restaurantId: 1, size: 8, mobile: '4186844758'}))
     .catch((err) => console.log('there was insertion err', err));
 };
 
 const addRestaurants = () => {
-  return db.Restaurant.findOrCreate({where: {name: 'Tempest', address: '431 Natoma St, San Francisco, CA 94103', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10, 'tables': JSON.stringify({'2': 4, '4': 6, '8': 8})}})
+  return db.Restaurant.findOrCreate({where: {name: 'Tempest', address: '431 Natoma St, San Francisco, CA 94103', phone: '(123) 456-7890', image: '../images/tempestbar.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}})
     .then(() => db.Restaurant.findOrCreate({where: {name: 'House of Prime Rib', address: '1906 Van Ness Ave, San Francisco, CA 94109', phone: '(415) 885-4605', image: '../images/houseofprimerib.jpg', status: 'Open', 'average_wait': 10, 'total_wait': 10}}))
     .then(() => db.Restaurant.findOrCreate({where: {name: 'Tsunami Panhandle', address: '1306 Fulton St, San Francisco, CA 94117', phone: '(415) 567-7664', image: '../images/tsunamipanhandle.jpg', status: 'Open', 'average_wait': 5, 'total_wait': 5}}))
     .then(() => db.Restaurant.findOrCreate({where: {name: 'Kitchen Story', address: '3499 16th St, San Francisco, CA 94114', phone: '(415) 525-4905', image: '../images/kitchenstory.jpg', status: 'Open', 'average_wait': 15, 'total_wait': 15}}))

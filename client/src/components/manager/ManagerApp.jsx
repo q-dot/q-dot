@@ -122,8 +122,8 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
+              <TablesManager notiCustomer={this.notiCustomer.bind(this)} queues={this.state.queues}/>
               <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
-              <TablesManager tables={this.state.restaurantInfo.tables}/>
             </div>
           </div>
         </div>

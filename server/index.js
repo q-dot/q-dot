@@ -86,7 +86,7 @@ app.get('/redirect', (req, res) => {
     res.cookie('qsessionid', '', { expires: new Date() });
     res.send('/customer');
   });
-})
+});
 
 //get info for one restaurant or all restaurants
 app.get('/restaurants', (req, res) => {

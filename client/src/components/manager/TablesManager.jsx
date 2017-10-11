@@ -4,57 +4,21 @@ class TablesManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      auditHistory: [],
-      modalClear: false,
-      tables: {}
     };
+    this.selectCustomer = this.selectCustomer.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps) {
-      // console.log(nextProps);
-      // var b = nextProps.replace(/'/g, '"');
-      // console.log(b);
-      let tables = JSON.parse(nextProps.tables);
-      console.log(tables);
-      this.setState({tables: tables}, () => {
+  selectCustomer(size) {
+    let intSize = parseInt(size.target.value);
+    let queues = this.props.queues;
 
-        console.log(this.state.tables);
-      });
+    for (let i in queues) {
+      if (queues[i].size <= intSize) {
+        console.log('next customer is ', queues[i]);
+        this.props.notiCustomer(queues[i].id, queues[i].customer);
+        break;
+      }
     }
-  }
-
-  getAuditHistory() {
-    var self = this;
-    $.ajax({
-      url: '/manager/history',
-      method: 'GET',
-      success: function(data) {
-        self.setState({
-          auditHistory: data
-        });
-      },
-      failure: function(err) {
-        console.log(err);
-      }
-    });
-  }
-
-  clearAuditHistory() {
-    var self = this;
-    $.ajax({
-      url: '/manager/history',
-      method: 'DELETE',
-      success: function(data) {
-        console.log(data);
-        self.setState({
-          auditHistory: []
-        });
-      },
-      failure: function(err) {
-        console.log(err);
-      }
-    });
   }
 
   render () {
@@ -66,7 +30,6 @@ class TablesManager extends React.Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>2-Seats</th>
                   <th>4-Seats</th>
                   <th>8-Seats</th>
@@ -74,10 +37,9 @@ class TablesManager extends React.Component {
               </thead>
               <tbody>
                 <tr>
-                  <td></td>
-                  <td><button className="btn-success btn-sm">2</button></td>
-                  <td><button className="btn-success btn-sm">4</button></td>
-                  <td><button className="btn-success btn-sm">8</button></td>
+                  <td><button value="2" className="btn-success btn-sm" onClick={(value) => this.selectCustomer(value)}>2</button></td>
+                  <td><button value="4" className="btn-success btn-sm" onClick={(value) => this.selectCustomer(value)}>4</button></td>
+                  <td><button value="8" className="btn-success btn-sm" onClick={(value) => this.selectCustomer(value)}>8</button></td>
                 </tr>
               </tbody>
             </table>
