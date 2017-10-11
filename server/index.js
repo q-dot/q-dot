@@ -15,6 +15,10 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 
+const nodemailer = require('nodemailer');
+
+const configs = require('./config/config.js');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -31,6 +35,15 @@ app.use(session({
   name: 'qsessionid',
   resave: false
 }));
+
+//Set up node mailer
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: configs.emailUsername + '@gmail.com',
+    pass: configs.emailPass
+  }
+});
 
 //these middlewares initialise passport and adds req.user to req object if user has aleady been authenticated
 app.use(passport.initialize());
@@ -289,8 +302,25 @@ io.on('connection', (socket) => {
     managerMap[restaurantId] = socket.id;
   });
 
-  socket.on('noti customer', (queueId) => {
+  socket.on('noti customer', (queueId, placeName, customer) => {
     if (queueMap[queueId]) {
+      // console.log('A customer is to be notified for their booking at', placeName);
+      let mailOptions = {
+        from: configs.emailUsername + '@gmail.com',
+        to: customer.email,
+        subject: 'Your table booked at ' + placeName + ' is ready!',
+        text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
+          + placeName + '\n\nBon Appétit,\nQ.'
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
       io.to(queueMap[queueId]).emit('noti', 'your table is ready!');
     }
   });

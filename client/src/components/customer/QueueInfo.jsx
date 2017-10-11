@@ -57,7 +57,6 @@ class QueueInfo extends React.Component {
   }
 
   clickedBack() {
-    console.log('Go back');
     $.get({
       url: '/redirect',
       success: () => {
