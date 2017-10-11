@@ -8,7 +8,7 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
 const dummyData = require('../database/dummydata.js');
-const testData = require('../database/testData.js');
+const testData = require('../database/testData.js'); // remove when done testing
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -274,7 +274,8 @@ app.delete('/manager/history', (req, res) => {
 });
 
 app.post('/restaurants', (req, res) => {
-  dbQuery.addRestaurant(testData.restaurant)
+  console.log(req.body);
+  dbQuery.addRestaurant(req.body)
   .then((results) => {
     res.sendStatus(201);
   })
@@ -289,12 +290,9 @@ app.post('/yelp', (req, res) => {
 
   yelp.accessToken(credentials.YELP_CLIENT_ID, credentials.YELP_SECRET)
   .then(response => {
-    // console.log(response.jsonBody.access_token);
     token = response.jsonBody.access_token;
     client = yelp.client(token);
 
-    console.log(typeof req.body);
-    // console.log(typeof req.body.location);
     client.search({
       term: req.body.query,
       location: req.body.location
@@ -311,24 +309,6 @@ app.post('/yelp', (req, res) => {
   });
 });
 
- 
-
-// app.post('/search', (req, res) => {
-//   console.log('req body ', typeof req.body) // OBJECT
-
-//   let options = {
-//     url: 'https://api.yelp.com/v2/search?term=food&location=San+Francisco',
-//     method: 'GET'
-//   };
-
-//   request(options, (error, response, body) => {
-//     console.log(body); //STRING
-//     let parsedBody = JSON.parse(body);
-
-//     res.send(JSON.stringify(parsedBody.data));
-//   });
-
-// });
 
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
