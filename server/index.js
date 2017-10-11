@@ -16,6 +16,8 @@ const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const Nexmo = require('nexmo');
 const request = require('request');
+const yelp = require('yelp-fusion');
+const credentials = require('./config/config.js');
 const nodemailer = require('nodemailer');
 const configs = require('./config/config.js');
 
@@ -283,28 +285,44 @@ app.post('/restaurants', (req, res) => {
 });
 
 app.get('/yelp', (req, res) => {
-  request('https://api.yelp.com/v2/search?term=food&location=San+Francisco', (err, res, body) => {
-    console.log(body);
+// *** YELP ***
+
+  const getToken = yelp.accessToken(credentials.YELP_CLIENT_ID, credentials.YELP_SECRET).then(response => {
+    // console.log(response.jsonBody.access_token);
+    token = response.jsonBody.access_token;
+    client = yelp.client(token);
+
+    client.search({
+      term:'Four Barrel Coffee',
+      location: 'san francisco, ca'
+    }).then(response => {
+      console.log(response.jsonBody.businesses[0].name);
+    }).catch(e => {
+      console.log(e);
+    });
+  }).catch(e => {
+    console.log(e);
   });
 });
 
+ 
 
-app.post('/search', (req, res) => {
-  console.log('req body ', typeof req.body) // OBJECT
+// app.post('/search', (req, res) => {
+//   console.log('req body ', typeof req.body) // OBJECT
 
-  let options = {
-    url: 'https://api.yelp.com/v2/search?term=food&location=San+Francisco',
-    method: 'GET'
-  };
+//   let options = {
+//     url: 'https://api.yelp.com/v2/search?term=food&location=San+Francisco',
+//     method: 'GET'
+//   };
 
-  request(options, (error, response, body) => {
-    console.log(body); //STRING
-    let parsedBody = JSON.parse(body);
+//   request(options, (error, response, body) => {
+//     console.log(body); //STRING
+//     let parsedBody = JSON.parse(body);
 
-    res.send(JSON.stringify(parsedBody.data));
-  });
+//     res.send(JSON.stringify(parsedBody.data));
+//   });
 
-});
+// });
 
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);

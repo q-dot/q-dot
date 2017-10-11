@@ -38,7 +38,8 @@
     "request": "^2.83.0",
     "sequelize": "^4.13.2",
     "socket.io": "^2.0.3",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "yelp-fusion": "^1.0.3"
   },
   "devDependencies": {
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
