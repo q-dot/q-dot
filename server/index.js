@@ -146,6 +146,9 @@ app.post('/queues', (req, res) => {
         if (req.body.email) {
           result.email = req.body.email;
         }
+        if (req.body.address) {
+          result.address = req.body.address;
+        }
         result.queueId = response.queueId;
         result.size = response.size;
         result.position = response.position;
@@ -190,8 +193,20 @@ app.get('/queues', (req, res) => {
     var results = {};
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
-        console.log('partialResults on server get: ', partialResults.costumer);
+        /*
+        console.log('**********partialResults on server get: ', partialResults.customer);
+          partialResults on server get:  customer {
+            dataValues: 
+             { id: 5,
+               name: 'X Yz',
+               address: '1234 ewsa st, sf, ca',
+               mobile: '23454434',
+               email: 'lkko@oiin',
+               createdAt: 2017-10-11T00:16:44.934Z,
+               updatedAt: 2017-10-11T00:16:44.934Z },
+        */
         results.name = partialResults.customer.name;
+        results.address = partialResults.customer.address;
         results.mobile = partialResults.customer.mobile;
         results.email = partialResults.customer.email;
         results.queueId = partialResults.id;
@@ -291,6 +306,7 @@ app.delete('/manager/history', (req, res) => {
 
 // need to add manager before restaurant b/c FK on restaurant
 app.post('/restaurants', (req, res) => {
+<<<<<<< HEAD
   var passwordInfo = dbManagerQuery.genPassword(req.body.manager.password, dbManagerQuery.genSalt());
 
   dbManagerQuery.addManager(req.body.manager.username, passwordInfo.passwordHash, passwordInfo.salt)
@@ -300,6 +316,9 @@ app.post('/restaurants', (req, res) => {
       restaurantInfo.managerId = managerId;
       dbQuery.addRestaurant(restaurantInfo);
     })
+=======
+  dbQuery.addRestaurant(testData.restaurant)
+>>>>>>> client and restaurant address added to frontend and database
     .then((results) => {
       res.sendStatus(201);
     })
@@ -307,6 +326,7 @@ app.post('/restaurants', (req, res) => {
       console.log('Error POST /restaurants ', err);
       res.sendStatus(401);
     });
+<<<<<<< HEAD
 });
 
 // *** YELP ***
@@ -331,6 +351,8 @@ app.post('/yelp', (req, res) => {
   .catch(e => {
     console.log(e);
   });
+=======
+>>>>>>> client and restaurant address added to frontend and database
 });
 
 

@@ -52,7 +52,8 @@ const findOrAddCustomer = (params) => {
       if (customer === null) {
         const customer = {
           name: helpers.nameFormatter(params.name),
-          mobile: helpers.phoneNumberFormatter(params.mobile)
+          mobile: helpers.phoneNumberFormatter(params.mobile),
+          address: params.address
         };
 
         if (params.email) {
@@ -175,7 +176,6 @@ const removeFromQueue = (queueId) => {
 const addRestaurant = (restaurantInfo) => {
   return db.Restaurant.create(restaurantInfo);
 };
-
 
 module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,

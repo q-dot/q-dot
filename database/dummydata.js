@@ -2,13 +2,13 @@ const db = require('./index.js');
 const dbQuery = require('../controller/index.js');
 
 const addToQueue = () => {
-  return dbQuery.addToQueue({name: 'Tiffany', restaurantId: 1, size: 2, mobile: '4158475697'})
-    .then(() => dbQuery.addToQueue({name: 'Neha', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
-    .then(() => dbQuery.addToQueue({name: 'Eugene', restaurantId: 1, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
-    .then(() => dbQuery.addToQueue({name: 'Johnny', restaurantId: 1, size: 2, mobile: '4156844758'}))
-    .then(() => dbQuery.addToQueue({name: 'Danny', restaurantId: 1, size: 4, mobile: '4166844758'}))
-    .then(() => dbQuery.addToQueue({name: 'ShiHao', restaurantId: 1, size: 2, mobile: '4576844758'}))
-    .then(() => dbQuery.addToQueue({name: 'Rebecca', restaurantId: 1, size: 8, mobile: '4186844758'}))
+  return dbQuery.addToQueue({name: 'Tiffany', address: '1560 Sacramento St, San Francisco, CA 94109', restaurantId: 1, size: 2, mobile: '4158475697'})
+    .then(() => dbQuery.addToQueue({name: 'Neha', address: '251 Rhode Island St, San Francisco, CA 94103', restaurantId: 1, size: 3, mobile: '4158965693', email: 'nez@gmail.com'}))
+    .then(() => dbQuery.addToQueue({name: 'Eugene', address: '230 Central Ave, San Francisco, CA 94117', restaurantId: 1, size: 3, mobile: '4157855678', email: 'eugene@gmail.com'}))
+    .then(() => dbQuery.addToQueue({name: 'Johnny', address: '735 7th Ave, San Francisco, CA 94118', restaurantId: 1, size: 2, mobile: '4156844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Danny', address: '101 Russ St San Francisco, CA 94103', restaurantId: 1, size: 4, mobile: '4166844758'}))
+    .then(() => dbQuery.addToQueue({name: 'ShiHao', address: '1001 Geary St San Francisco, CA 94109', restaurantId: 1, size: 2, mobile: '4576844758'}))
+    .then(() => dbQuery.addToQueue({name: 'Rebecca', address: '48 Golden Gate Ave San Francisco, CA 94102', restaurantId: 1, size: 8, mobile: '4186844758'}))
     .catch((err) => console.log('there was insertion err', err));
 };
 

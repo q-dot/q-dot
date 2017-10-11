@@ -12,6 +12,6 @@ const CustomerMain = () => (
       <Route path={'/restaurant'} component={SelectedRestaurant}/>
     </Switch>
   </main> 
-)
+);
 
 export default CustomerMain;
