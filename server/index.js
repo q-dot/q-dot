@@ -15,9 +15,8 @@ const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const Nexmo = require('nexmo');
-
+const request = require('request');
 const nodemailer = require('nodemailer');
-
 const configs = require('./config/config.js');
 
 app.use(bodyParser.json());
@@ -281,6 +280,30 @@ app.post('/restaurants', (req, res) => {
     console.log('Error POST /restaurants ', err);
     res.sendStatus(401);
   });
+});
+
+app.get('/yelp', (req, res) => {
+  request('https://api.yelp.com/v2/search?term=food&location=San+Francisco', (err, res, body) => {
+    console.log(body);
+  });
+});
+
+
+app.post('/search', (req, res) => {
+  console.log('req body ', typeof req.body) // OBJECT
+
+  let options = {
+    url: 'https://api.yelp.com/v2/search?term=food&location=San+Francisco',
+    method: 'GET'
+  };
+
+  request(options, (error, response, body) => {
+    console.log(body); //STRING
+    let parsedBody = JSON.parse(body);
+
+    res.send(JSON.stringify(parsedBody.data));
+  });
+
 });
 
 server.listen(port, () => {
