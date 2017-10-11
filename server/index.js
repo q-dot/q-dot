@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || '104.237.154.8',
+    host: process.env.REDISURL || '107.170.208.112',
     port: process.env.REDISPORT || 6379
   }),
   secret: process.env.SESSIONSECRET || 'nyancat',
@@ -86,7 +86,7 @@ app.get('/redirect', (req, res) => {
     res.cookie('qsessionid', '', { expires: new Date() });
     res.send('/customer');
   });
-})
+});
 
 //get info for one restaurant or all restaurants
 app.get('/restaurants', (req, res) => {

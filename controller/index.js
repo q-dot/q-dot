@@ -159,7 +159,7 @@ const removeFromQueue = (queueId) => {
 
 const addRestaurant = (restaurantInfo) => {
   return db.Restaurant.create(restaurantInfo);
-}
+};
 
 module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,

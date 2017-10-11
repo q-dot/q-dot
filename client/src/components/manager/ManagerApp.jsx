@@ -4,6 +4,7 @@ import StatusSwitch from './StatusSwitch.jsx';
 import AddToQueue from './AddToQueue.jsx';
 import Nav from './Nav.jsx';
 import ManagerAudit from './ManagerAudit.jsx';
+import TablesManager from './TablesManager.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 
@@ -121,6 +122,7 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
+              <TablesManager notiCustomer={this.notiCustomer.bind(this)} queues={this.state.queues}/>
               <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
