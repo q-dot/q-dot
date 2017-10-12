@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ResultList from './ResultList.jsx';
 
@@ -12,7 +13,7 @@ class CreateRestaurant extends React.Component {
       username: '',
       password: '',
       results: [],
-      selectedRestaurant: ''
+      selectedRestaurant: {name: '', location: {address1: '', city: ''}}
     };
 
     this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -52,20 +53,29 @@ class CreateRestaurant extends React.Component {
     }
 
     $.ajax(options)
-      .then((data) => {this.setState({results: data})})
+      .then((data) => {
+        this.setState({results: data});
+        // const elem = ReactDOM.findDOMNode(this.refs.searchList);
+        // if (elem) {
+        //   elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        // }
+      })
       .fail((data) => {console.log(data)});
   }
 
   selectRestaurant(index) {
     this.setState({
       selectedRestaurant: this.state.results[index]
-    }, () => {console.log(this.state.selectedRestaurant)});
+    }, () => {
+      console.log(this.state.selectedRestaurant);
+      setTimeout(() => {
+        const elem = ReactDOM.findDOMNode(this.refs.readyButton);
+        if (elem) {
+          elem.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    });
   }
-
-// TODO: pass manager info along with restaurant info so that middleware can handle
-// adding both to DB
-
-// TODO: handle serverside too! comment out post to manager endpoint
 
 // divide req.body into rest. data object and manager data
   createRestaurant(index) {
@@ -79,7 +89,7 @@ class CreateRestaurant extends React.Component {
           phone: this.state.selectedRestaurant.phone,
           image: this.state.selectedRestaurant.image_url,
           status: 'Open', // should prob be closed
-          'average_wait': 10, 
+          'average_wait': 10,
           'total_wait': 10
         },
         manager: {
@@ -98,7 +108,7 @@ class CreateRestaurant extends React.Component {
   //   let options = {
   //     url: '../../manager',
   //     method: 'POST',
-  //     data: 
+  //     data:
   //   }
 
   //   $.ajax(options)
@@ -108,22 +118,40 @@ class CreateRestaurant extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>Username: <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
-        <div>Password: <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
+      <div className='createPaneContainer'>
+        <div className='innerPane fixedPane'>
+          <h2 className='form-signin-heading'>New Manager:</h2>
+          <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
+          <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
 
-        <h4>Search for your restaurant</h4>
-        <div>Restaurant Name: <input type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
-        <div>Restaurant Location: <input type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
-        <button onClick={this.submitSearch}>Submit</button>
-          {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+          <h4>Search for your restaurant</h4>
+          <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
+          <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
+          <div className='buffer'></div>
+          <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
+          <br /><div className='horLine' /><br />
+          {this.state.selectedRestaurant.name !== ''
+          ? <div>
+            <h4>Selected:</h4>
+            <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+            </div>
+            {this.state.selectedRestaurant.name}<br />
+            <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
+          </div>
           : null}
+        </div>
+        <div className='innerPane'>
 
-        
-        {this.state.selectedRestaurant ? <button onClick={this.createRestaurant}>Create Restaurant</button> : null}
+          <div ref='searchList'></div>
+            {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+            : null}
+          <div ref='readyButton' className='buffer' />
 
+          {this.state.selectedRestaurant.name !== ''
+            ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
+            : null}
 
-
+        </div>
       </div>
     );
   }

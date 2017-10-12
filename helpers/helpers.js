@@ -34,9 +34,27 @@ const sendSMS = (nexmoObj, virtualNumber, phoneToUse, placeName) => {
   );
 };
 
+const sendEmail = (fromEmail, customer, placeName, transporter) => {
+  let mailOptions = {
+    from: fromEmail + '@gmail.com',
+    to: customer.email,
+    subject: 'Your table booked at ' + placeName + ' is ready!',
+    text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
+      + placeName + '\n\nBon Appétit,\nQ.'
+  };
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
 module.exports = {
   nameFormatter: nameFormatter,
   phoneNumberFormatter: phoneNumberFormatter,
   filterPhoneForNexmo: filterPhoneForNexmo,
-  sendSMS: sendSMS
+  sendSMS: sendSMS,
+  sendEmail: sendEmail
 };
