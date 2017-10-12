@@ -12,6 +12,28 @@ class CustomerList extends React.Component {
     this.state = {
       modalQueue: undefined
     };
+    this.entries = [];
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log('these are new props', newProps);
+    if (newProps.queueId) {
+      this.initiateTimer(newProps.queueId);
+    }
+  }
+
+  initiateTimer(queueId) {
+    for (let i in this.entries) {
+      if (!this.entries[i]) {
+        continue;
+      }
+      if (this.entries[i].props.queue.id === queueId) {
+        this.entries[i].setState({startTimer: true});
+      }
+    }
+    this.entries = [];
+    console.log('these are entries after the click', this.entries);
+
   }
 
   showModal(queue) {
@@ -24,10 +46,21 @@ class CustomerList extends React.Component {
   render() {
     let notiCustomer = this.props.notiCustomer.bind(this);
     let entries = this.props.queues ? _.map(this.props.queues, (queue, index) => {
-      return <CustomerListEntry key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
+      return <CustomerListEntry ref={queue => this.entries.push(queue)} timer={false} key={index} queue={queue} notiCustomer={notiCustomer} showModal={this.showModal.bind(this)}/>;
     }) : <div>Nobody In Queue</div>;
     
-    let removeCustomer = () => this.props.removeCustomer(this.state.modalQueue.id);
+    let removeCustomer = () => {
+      console.log('this is the modal queue', this.state.modalQueue.id);
+      for (let i in this.entries) {
+        if (!this.entries[i]) {
+          continue;
+        }
+        if (this.entries[i].props.queue.id === this.state.modalQueue.id) {
+          this.entries[i].setState({removeTimer: true});
+        }
+      }
+      this.props.removeCustomer(this.state.modalQueue.id);
+    };
     return (
       <div>
         <div className="row">
