@@ -5,9 +5,19 @@ class CustomerListEntry extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      timer: ''
+      startTimer: false,
+      timer: '',
+      runningTimer: false,
     };
     this.handleClick = this.handleClick.bind(this);
+
+
+  }
+
+  componentDidUpdate() {
+    if (this.state.startTimer) {
+      this.startTimer();
+    }
   }
 
   handleClick() {
@@ -16,6 +26,11 @@ class CustomerListEntry extends React.Component {
   }
 
   startTimer() {
+    if (this.state.runningTimer) {
+      return;
+    } else {
+      this.setState({runningTimer: true});
+    }
     let maxTime = 180000;
 
     for (let i = 0; i <= 180000; i += 1000) {
@@ -33,12 +48,18 @@ class CustomerListEntry extends React.Component {
   }
 
   render() {
+
+
     return (
       <div className="row panel-body">
         <div className="col-md-7">
           <div className="customer-entry-head">
             <h3 className="customer-entry-text">{this.props.queue.customer.name}</h3>
             <p className="customer-entry-text timer">{this.state.timer}</p>
+            <div className="led-box">
+              <div className="led-yellow"></div>
+              <p>Yellow LED</p>
+            </div>
           </div>
           <div className="row">
             <p className="col-md-6"><i className="fa fa-mobile fa-fw" aria-hidden="true"></i> {this.props.queue.customer.mobile}</p>
