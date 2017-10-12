@@ -106,8 +106,8 @@ const Restaurant = db.define('restaurant', {
   status: Sequelize.STRING,
 
   image: Sequelize.STRING,
-  tables: Sequelize.TEXT
-  // managerId: Sequelize.INTEGER
+  tables: Sequelize.TEXT,
+  managerId: Sequelize.INTEGER
 });
 
 // Relationship between Restaurant & Queue

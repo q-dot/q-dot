@@ -17,7 +17,6 @@ const passport = require('./passport.js');
 const Nexmo = require('nexmo');
 const request = require('request');
 const yelp = require('yelp-fusion');
-const credentials = require('./config/config.js');
 const nodemailer = require('nodemailer');
 const configs = require('./config/config.js');
 
@@ -290,7 +289,7 @@ app.post('/restaurants', (req, res) => {
 // *** YELP ***
 app.post('/yelp', (req, res) => {
 
-  yelp.accessToken(credentials.YELP_CLIENT_ID, credentials.YELP_SECRET)
+  yelp.accessToken(configs.YELP_CLIENT_ID, configs.YELP_SECRET)
   .then(response => {
     token = response.jsonBody.access_token;
     client = yelp.client(token);
