@@ -13,7 +13,7 @@ class CreateRestaurant extends React.Component {
       username: '',
       password: '',
       results: [],
-      selectedRestaurant: ''
+      selectedRestaurant: {name: '', location: {address1: '', city: ''}}
     };
 
     this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -55,10 +55,10 @@ class CreateRestaurant extends React.Component {
     $.ajax(options)
       .then((data) => {
         this.setState({results: data});
-        const elem = ReactDOM.findDOMNode(this.refs.searchList);
-        if (elem) {
-          elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-        }
+        // const elem = ReactDOM.findDOMNode(this.refs.searchList);
+        // if (elem) {
+        //   elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        // }
       })
       .fail((data) => {console.log(data)});
   }
@@ -135,26 +135,37 @@ class CreateRestaurant extends React.Component {
 
   render() {
     return (
-      <div className='form-signin'>
-        <h2 className='form-signin-heading'>New Manager:</h2>
-        <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
-        <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
+      <div className='createPaneContainer'>
+        <div className='innerPane fixedPane'>
+          <h2 className='form-signin-heading'>New Manager:</h2>
+          <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
+          <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
 
-        <h4>Search for your restaurant</h4>
-        <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
-        <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
-        <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
-        <div ref='searchList' className='buffer'></div>
-          {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+          <h4>Search for your restaurant</h4>
+          <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
+          <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
+          <div className='buffer'></div>
+          <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
+          <br /><br />
+          {this.state.selectedRestaurant.name !== ''
+          ? <div>
+            <h4>Selected:</h4> {this.state.selectedRestaurant.name}<br />
+            <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
+          </div>
           : null}
-        <div ref='readyButton' className='buffer' />
+        </div>
+        <div className='innerPane'>
 
-        {this.state.selectedRestaurant
-          ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
-          : null}
+          <div ref='searchList'></div>
+            {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+            : null}
+          <div ref='readyButton' className='buffer' />
 
+          {this.state.selectedRestaurant.name !== ''
+            ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
+            : null}
 
-
+        </div>
       </div>
     );
   }

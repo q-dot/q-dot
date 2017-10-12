@@ -81,3 +81,19 @@ body {
   -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
           box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
 }
+
+.createPaneContainer {
+  display: table;
+  width: 70%;
+  margin: auto;
+  justify-content: center;
+}
+
+.innerPane {
+  display: table-cell;
+  width: 35%;
+}
+
+.fixedPane {
+  position: fixed;
+}
