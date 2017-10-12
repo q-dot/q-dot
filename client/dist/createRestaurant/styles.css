@@ -59,6 +59,13 @@ body {
   padding-right: 5px;
 }
 
+.restaurant-thumbnail {
+  width: auto;
+  height: 100px;
+  background-position: center;
+  background-size: cover;
+}
+
 .description {
   display: table-cell;
   text-align: center;
@@ -92,6 +99,17 @@ body {
 .innerPane {
   display: table-cell;
   width: 35%;
+}
+
+.innerPane2 {
+  display: table-cell;
+  width: 1%;
+  height: 100vh;
+  border-left: 1px solid black;
+}
+
+.horLine {
+  border: 1px solid black;
 }
 
 .fixedPane {

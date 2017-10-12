@@ -146,10 +146,13 @@ class CreateRestaurant extends React.Component {
           <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
           <div className='buffer'></div>
           <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
-          <br /><br />
+          <br /><div className='horLine' /><br />
           {this.state.selectedRestaurant.name !== ''
           ? <div>
-            <h4>Selected:</h4> {this.state.selectedRestaurant.name}<br />
+            <h4>Selected:</h4>
+            <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+            </div>
+            {this.state.selectedRestaurant.name}<br />
             <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
           </div>
           : null}
