@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ResultList from './ResultList.jsx';
 
@@ -59,11 +60,31 @@ class CreateRestaurant extends React.Component {
   selectRestaurant(index) {
     this.setState({
       selectedRestaurant: this.state.results[index]
-    }, () => {console.log(this.state.selectedRestaurant)});
+    }, () => {
+      console.log(this.state.selectedRestaurant);
+      const elem = ReactDOM.findDOMNode(this.refs.readyButton);
+
+      if (elem) {
+        console.log('attempt to scroll to', elem);
+        elem.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   }
 
-// TODO: pass manager info along with restaurant info so that middleware can handle
-// adding both to DB
+  createRestaurant(index) {
+    let options = {
+      url: '../../restaurants',
+      method: 'POST',
+      data: {
+        name: this.state.selectedRestaurant.name,
+        address: `${this.state.selectedRestaurant.location.address1}, ${this.state.selectedRestaurant.location.city}, ${this.state.selectedRestaurant.location.state}, ${this.state.selectedRestaurant.location.zip_code}`,
+        phone: this.state.selectedRestaurant.phone,
+        image: this.state.selectedRestaurant.image_url,
+        status: 'Open', // should prob be closed
+        'average_wait': 10,
+        'total_wait': 10
+      }
+    }
 
 // TODO: handle serverside too! comment out post to manager endpoint
 
@@ -79,7 +100,7 @@ class CreateRestaurant extends React.Component {
           phone: this.state.selectedRestaurant.phone,
           image: this.state.selectedRestaurant.image_url,
           status: 'Open', // should prob be closed
-          'average_wait': 10, 
+          'average_wait': 10,
           'total_wait': 10
         },
         manager: {
@@ -98,7 +119,7 @@ class CreateRestaurant extends React.Component {
   //   let options = {
   //     url: '../../manager',
   //     method: 'POST',
-  //     data: 
+  //     data:
   //   }
 
   //   $.ajax(options)
@@ -108,19 +129,20 @@ class CreateRestaurant extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>Username: <input type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
-        <div>Password: <input type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
+      <div className='form-signin'>
+        <h2 className='form-signin-heading'>New Manager:</h2>
+        <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
+        <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
 
         <h4>Search for your restaurant</h4>
-        <div>Restaurant Name: <input type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
-        <div>Restaurant Location: <input type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
-        <button onClick={this.submitSearch}>Submit</button>
+        <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
+        <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
+        <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
+        <div className='buffer'></div>
           {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
           : null}
-
-        
-        {this.state.selectedRestaurant ? <button onClick={this.createRestaurant}>Create Restaurant</button> : null}
+        <div ref='readyButton' />
+        {this.state.selectedRestaurant ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button> : null}
 
 
 
