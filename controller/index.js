@@ -157,6 +157,11 @@ const removeFromQueue = (queueId) => {
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
 };
 
+const addRestaurant = (restaurantInfo) => {
+  return db.Restaurant.create(restaurantInfo);
+};
+
+
 module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,
   findInfoForOneRestaurant: findInfoForOneRestaurant,
@@ -166,5 +171,6 @@ module.exports = {
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,
   getManagerInfo: getManagerInfo,
-  removeFromQueue: removeFromQueue
+  removeFromQueue: removeFromQueue,
+  addRestaurant: addRestaurant
 };

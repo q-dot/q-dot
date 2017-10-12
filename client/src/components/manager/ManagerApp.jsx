@@ -4,17 +4,20 @@ import StatusSwitch from './StatusSwitch.jsx';
 import AddToQueue from './AddToQueue.jsx';
 import Nav from './Nav.jsx';
 import ManagerAudit from './ManagerAudit.jsx';
+import TablesManager from './TablesManager.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 
 class ManagerApp extends React.Component {
 
   constructor(props) {
+    console.log(props);
     super(props);
 
     this.state = {
       queues: undefined,
-      restaurantInfo: {}
+      restaurantInfo: {},
+      queueId: null
     };
 
     // socket initialize
@@ -44,9 +47,11 @@ class ManagerApp extends React.Component {
     });
   }
 
-  notiCustomer(queueId) {
-    console.log(`noti sended to queueId: ${queueId}`);
-    this.socket.emit('noti customer', queueId);
+  notiCustomer(queueId, customer) {
+    console.log(`noti sent to queueId: ${queueId}`);
+    // console.log(this.state.restaurantInfo);
+    this.setState({queueId: queueId});
+    this.socket.emit('noti customer', queueId, this.state.restaurantInfo.name, customer);
   }
 
   addToQueue(customer) {
@@ -120,7 +125,8 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <TablesManager notiCustomer={this.notiCustomer.bind(this)} queues={this.state.queues}/>
+              <CustomerList queueId={this.state.queueId} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
         </div>

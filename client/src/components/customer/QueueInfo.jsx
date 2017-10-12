@@ -3,6 +3,7 @@ import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
+import { Link } from 'react-router-dom';
 
 class QueueInfo extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class QueueInfo extends React.Component {
     this.state = {
       currentCustomer: {
         restaurant: {
-          name:''
+          name: ''
         }
       },
       ready: false
@@ -20,8 +21,15 @@ class QueueInfo extends React.Component {
     // dynamically update if table is ready
     this.socket.on('noti', (message) => {
       console.log(message);
+      window.alert(message);
+      this.playReadySound();
       this.setState({ ready: true });
     });
+  }
+
+  playReadySound() {
+    let audio = new Audio('./Table-ready.mp3');
+    audio.play();
   }
 
   componentDidMount() {
@@ -31,18 +39,28 @@ class QueueInfo extends React.Component {
   getCurrentCustomerId() {
     let windowUrl = window.location.href;
     let id = windowUrl.slice(-1);
-    
+
     $.ajax({
       method: 'GET',
       url: `/queues?queueId=${id}`,
       success: (data) => {
         console.log('successfully grabbed queue data for customer', data);
         this.setState({ currentCustomer: data });
+        console.log('this is the data: ', data);
         // report queueId to server socket
         this.socket.emit('customer report', id);
       },
       failure: (error) => {
         console.log('failed to grab queue data for customer', error);
+      }
+    });
+  }
+
+  clickedBack() {
+    $.get({
+      url: '/redirect',
+      success: () => {
+        window.location.href = "/customer";
       }
     });
   }
@@ -53,8 +71,8 @@ class QueueInfo extends React.Component {
         <CustomerBanner customer={this.state.currentCustomer}/>
         <h5>YOUR QUEUE NUMBER IS</h5>
         {
-          this.state.ready 
-            ? <h3 className="ready-noti">Your table is ready!</h3>
+          this.state.ready
+            ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a></div>
             : <div className="queue-position-display">
               <span className="position-number">{this.state.currentCustomer.position}</span>
               <h6>your approximate wait time is:</h6>
