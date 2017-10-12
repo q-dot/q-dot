@@ -41,7 +41,7 @@ class CustomerHome extends React.Component {
         <div className="select-restaurant-container">
           <h4>Help me queue up at...</h4>
           {this.state.restaurantList.map(restaurant => {
-            console.log(restaurant);
+            console.log('MAPPING:', restaurant);
             return (
               <div key={restaurant.id}>
                 <Link to={`/restaurant/${restaurant.name}/${restaurant.id}`}><RestaurantCard restaurant={restaurant}/></Link>
