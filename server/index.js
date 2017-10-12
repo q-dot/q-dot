@@ -8,16 +8,16 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
 const dummyData = require('../database/dummydata.js');
-const testData = require('../database/testData.js');
+const testData = require('../database/testData.js'); // remove when done testing
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
 const Nexmo = require('nexmo');
-
+const request = require('request');
+const yelp = require('yelp-fusion');
 const nodemailer = require('nodemailer');
-
 const configs = require('./config/config.js');
 
 app.use(bodyParser.json());
@@ -56,6 +56,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
+
+// TODO: add DB lookup to chain
 app.get('/manager', (req, res, next) => {
 
   if (req.user) {
@@ -273,7 +275,8 @@ app.delete('/manager/history', (req, res) => {
 });
 
 app.post('/restaurants', (req, res) => {
-  dbQuery.addRestaurant(testData.restaurant)
+  console.log(req.body);
+  dbQuery.addRestaurant(req.body)
   .then((results) => {
     res.sendStatus(201);
   })
@@ -282,6 +285,31 @@ app.post('/restaurants', (req, res) => {
     res.sendStatus(401);
   });
 });
+
+// *** YELP ***
+app.post('/yelp', (req, res) => {
+
+  yelp.accessToken(configs.YELP_CLIENT_ID, configs.YELP_SECRET)
+  .then(response => {
+    token = response.jsonBody.access_token;
+    client = yelp.client(token);
+
+    client.search({
+      term: req.body.query,
+      location: req.body.location
+    })
+    .then(result => {
+      res.send(result.jsonBody.businesses);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+  })
+  .catch(e => {
+    console.log(e);
+  });
+});
+
 
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);

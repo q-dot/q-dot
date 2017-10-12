@@ -6,6 +6,7 @@ import SelectedRestaurant from './SelectedRestaurant.jsx';
 class RestaurantCard extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.restaurant);
     this.state = {
       restaurantStatus: this.props.restaurant.status
     };

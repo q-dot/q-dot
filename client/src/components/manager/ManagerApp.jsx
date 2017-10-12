@@ -11,6 +11,7 @@ import io from 'socket.io-client';
 class ManagerApp extends React.Component {
 
   constructor(props) {
+    console.log(props);
     super(props);
 
     this.state = {
