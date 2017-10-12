@@ -241,19 +241,21 @@ app.get('/logout', (req, res) => {
     });
 });
 
+//this must have originally been for an existing manager adding another manager
+// to the same restaurant
 //add a new manager login for a restaurant
 app.post('/manager', (req, res) => {
-  if (req.user) {
-    if (!req.query.password || !req.query.username) {
+  // if (req.user) {
+    if (!req.body.password || !req.body.username) {
       res.sendStatus(400);
     } else {
-      var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
-      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt)
+      var passwordInfo = dbManagerQuery.genPassword(req.body.password, dbManagerQuery.genSalt());
+      dbManagerQuery.addManager(req.body.username, passwordInfo.passwordHash, passwordInfo.salt)
         .then(results => res.send(results));
     }
-  } else {
-    res.sendStatus(401);
-  }
+//  } else {
+    // res.sendStatus(401);
+  // }
 });
 
 //returns manager login/logout history
@@ -274,16 +276,24 @@ app.delete('/manager/history', (req, res) => {
   }
 });
 
+// need to add manager before restaurant b/c FK on restaurant
 app.post('/restaurants', (req, res) => {
-  console.log(req.body);
-  dbQuery.addRestaurant(req.body)
-  .then((results) => {
-    res.sendStatus(201);
-  })
-  .catch((err) => {
-    console.log('Error POST /restaurants ', err);
-    res.sendStatus(401);
-  });
+  var passwordInfo = dbManagerQuery.genPassword(req.body.manager.password, dbManagerQuery.genSalt());
+
+  dbManagerQuery.addManager(req.body.manager.username, passwordInfo.passwordHash, passwordInfo.salt)
+    .then((results) => {
+      managerId = results[0].dataValues.id;
+      restaurantInfo = req.body.restaurant;
+      restaurantInfo.managerId = managerId;
+      dbQuery.addRestaurant(restaurantInfo);
+    })
+    .then((results) => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log('Error POST /restaurants ', err);
+      res.sendStatus(401);
+    });
 });
 
 // *** YELP ***

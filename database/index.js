@@ -42,7 +42,7 @@ const Manager = db.define('manager', {
   username: Sequelize.STRING,
   passwordHash: Sequelize.STRING,
   passwordSalt: Sequelize.STRING,
-  restaurantId: Sequelize.INTEGER
+  // restaurantId: Sequelize.INTEGER
 });
 
 //Customer Schema

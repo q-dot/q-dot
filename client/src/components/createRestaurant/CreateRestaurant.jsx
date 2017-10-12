@@ -22,6 +22,7 @@ class CreateRestaurant extends React.Component {
     this.submitSearch = this.submitSearch.bind(this);
     this.selectRestaurant = this.selectRestaurant.bind(this);
     this.createRestaurant = this.createRestaurant.bind(this);
+    // this.createManager = this.createManager.bind(this);
   }
 
   handleQueryChange(e) {
@@ -61,18 +62,30 @@ class CreateRestaurant extends React.Component {
     }, () => {console.log(this.state.selectedRestaurant)});
   }
 
+// TODO: pass manager info along with restaurant info so that middleware can handle
+// adding both to DB
+
+// TODO: handle serverside too! comment out post to manager endpoint
+
+// divide req.body into rest. data object and manager data
   createRestaurant(index) {
     let options = {
       url: '../../restaurants',
       method: 'POST',
       data: {
-        name: this.state.selectedRestaurant.name,
-        address: `${this.state.selectedRestaurant.location.address1}, ${this.state.selectedRestaurant.location.city}, ${this.state.selectedRestaurant.location.state}, ${this.state.selectedRestaurant.location.zip_code}`,
-        phone: this.state.selectedRestaurant.phone,
-        image: this.state.selectedRestaurant.image_url,
-        status: 'Open', // should prob be closed
-        'average_wait': 10, 
-        'total_wait': 10
+        restaurant: {
+          name: this.state.selectedRestaurant.name,
+          address: `${this.state.selectedRestaurant.location.address1}, ${this.state.selectedRestaurant.location.city}, ${this.state.selectedRestaurant.location.state}, ${this.state.selectedRestaurant.location.zip_code}`,
+          phone: this.state.selectedRestaurant.phone,
+          image: this.state.selectedRestaurant.image_url,
+          status: 'Open', // should prob be closed
+          'average_wait': 10, 
+          'total_wait': 10
+        },
+        manager: {
+          username: this.state.username,
+          password: this.state.password
+        }
       }
     }
 
@@ -81,28 +94,18 @@ class CreateRestaurant extends React.Component {
       .fail((data) => {console.log(data)});
   }
 
-  createManager() {
-    let options = {
-      url: '../../restaurants',
-      method: 'POST',
-      data: {
-        name: this.state.selectedRestaurant.name,
-        address: `${this.state.selectedRestaurant.location.address1}, ${this.state.selectedRestaurant.location.city}, ${this.state.selectedRestaurant.location.state}, ${this.state.selectedRestaurant.location.zip_code}`,
-        phone: this.state.selectedRestaurant.phone,
-        image: this.state.selectedRestaurant.image_url,
-        status: 'Open', // should prob be closed
-        'average_wait': 10, 
-        'total_wait': 10
-      }
-    }
+  // createManager() {
+  //   let options = {
+  //     url: '../../manager',
+  //     method: 'POST',
+  //     data: 
+  //   }
 
-    $.ajax(options)
-      .then((data) => {console.log(data)})
-      .fail((data) => {console.log(data)});
-  }
+  //   $.ajax(options)
+  //     .then((data) => {console.log(data)})
+  //     .fail((data) => {console.log(data)});
+  // }
 
-
-  // TODO: Only show button (with rest. name) if a rest is selected
   render() {
     return (
       <div>
