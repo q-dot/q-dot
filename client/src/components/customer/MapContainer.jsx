@@ -37,14 +37,6 @@ class MapContainer extends React.Component {
           distance: data.routes[0].legs[0].distance.text,
           duration: data.routes[0].legs[0].duration.text,
         });
-        //   start: {
-        //     address: data.routes.legs[0].start_address, 
-        //     lat: data.routes.legs[0].start_location.lat, 
-        //     lng: data.routes.legs[0].start_location.lng},
-        //   end: {
-        //     address: data.routes.legs[0].end_address, 
-        //     lat: data.routes.legs[0].end_location.lat, 
-        //     lng: data.routes.legs[0].end_location.lng}
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiYmFyZS1taW5pbXVtIiwiYSI6ImNqOG1hbXVtNzB3cmwycGpzZGJzazFoNzMifQ.f8cGHlo4g6pPD75LzPLFPw';
         
@@ -57,13 +49,8 @@ class MapContainer extends React.Component {
         
         var nav = new mapboxgl.NavigationControl();
         map.addControl(nav, 'top-right');
-        var coords = polyline.decode(this.state.poly); //data.routes[0].overview_polyline.points);
+        var coords = polyline.decode(this.state.poly); 
         var flipCoord = this.flip(coords);
-        // var distance = data.routes[0].legs[0].distance.text;
-        // var duration = data.routes[0].legs[0].duration.text;
-        // var origin = [data.routes[0].legs[0].end_location.lng, data.routes[0].legs[0].end_location.lat];
-        // var destination = [data.routes[0].legs[0].start_location.lng, data.routes[0].legs[0].start_location.lat];
-
 
         map.on('load', function () { 
 
@@ -115,3 +102,4 @@ class MapContainer extends React.Component {
 }
 
 export default MapContainer;
+
