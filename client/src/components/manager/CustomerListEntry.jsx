@@ -8,43 +8,57 @@ class CustomerListEntry extends React.Component {
       startTimer: false,
       timer: '',
       runningTimer: false,
+      removeTimer: false,
+      shouldHide: true
     };
     this.handleClick = this.handleClick.bind(this);
-
+    let timer;
 
   }
 
   componentDidUpdate() {
-    if (this.state.startTimer) {
+    if (this.state.startTimer && !this.state.runningTimer) {
+      this.setState({shouldHide: false});
       this.startTimer();
+    }
+
+    if (this.state.removeTimer) {
+      clearInterval(this.timer);
+      this.setState({timer: '', runningTimer: true, removeTimer: false, shouldHide: true});
     }
   }
 
   handleClick() {
-    this.startTimer();
-    this.props.notiCustomer(this.props.queue.id, this.props.queue.customer);
-  }
-
-  startTimer() {
-    if (this.state.runningTimer) {
-      return;
+    if (this.state.startTimer) {
+      clearInterval(this.timer);
+      this.setState({timer: '', startTimer: false, runningTimer: false, shouldHide: true});
     } else {
-      this.setState({runningTimer: true});
+      this.setState({startTimer: true, shouldHide: false});
+      this.startTimer();
+      this.props.notiCustomer(this.props.queue.id, this.props.queue.customer);
     }
-    let maxTime = 180000;
-
-    for (let i = 0; i <= 180000; i += 1000) {
-      setTimeout(() => {
-        let time = (maxTime - i) / 1000;
-        let min = Math.floor(time / 60);
-        let sec = Math.floor(time % 60);
-        sec = ('0' + sec).slice(-2);
-        let timeStr = min.toString() + ':' + sec.toString();
-
-        this.setState({timer: timeStr});
-        
-      }, i);
-    }
+  }
+  
+  printTime(ms) {
+    let time = ms / 1000;
+    let min = Math.floor(time / 60);
+    let sec = Math.floor(time % 60);
+    sec = ('0' + sec).slice(-2);
+    return min.toString() + ':' + sec.toString();
+  }
+  
+  startTimer() {
+    this.setState({runningTimer: true});
+    //clearInterval(this.timer);
+    let i = 180000;
+    this.setState({timer: this.printTime(i)});
+    let interval = 1000;
+    this.timer = setInterval(() => {
+      this.setState({timer: this.printTime(i)});
+      if (i > 0) {
+        i -= 1000;
+      }
+    }, interval);
   }
 
   render() {
@@ -56,10 +70,7 @@ class CustomerListEntry extends React.Component {
           <div className="customer-entry-head">
             <h3 className="customer-entry-text">{this.props.queue.customer.name}</h3>
             <p className="customer-entry-text timer">{this.state.timer}</p>
-            <div className="led-box">
-              <div className="led-yellow"></div>
-              <p>Yellow LED</p>
-            </div>
+            <div className={this.state.shouldHide ? 'hidden' : 'led-yellow'}></div>
           </div>
           <div className="row">
             <p className="col-md-6"><i className="fa fa-mobile fa-fw" aria-hidden="true"></i> {this.props.queue.customer.mobile}</p>
