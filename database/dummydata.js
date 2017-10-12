@@ -38,9 +38,9 @@ const addManager = () => {
 const dropDB = () => {
   return db.Queue.drop()
     .then(() => db.Customer.drop())
+    .then(() => db.Restaurant.drop())
     .then(() => db.ManagerAudit.drop())
     .then(() => db.Manager.drop())
-    .then(() => db.Restaurant.drop())
     .then(() => db.Manager.sync({force: true})) // manager needs to sync before restaurant for FK
     .then(() => db.Restaurant.sync({force: true}))
     .then(() => db.Customer.sync({force: true}))
