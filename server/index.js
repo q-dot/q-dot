@@ -234,7 +234,8 @@ app.put('/queues', (req, res) => {
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send('/manager'));
+    .then(results => res.send('/manager'))
+    .catch(err => console.error('audit add failed:', err));
 });
 
 //request for logout of manager page of a restaurant
@@ -330,11 +331,6 @@ server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
 
-// socket io cant use express listen
-// app.listen(port, () => {
-//   console.log(`(>^.^)> Server now listening on ${port}!`);
-// });
-
 let queueMap = {};// queueId: socketId
 let managerMap = {};// restaurantId: socketId
 
@@ -353,14 +349,7 @@ io.on('connection', (socket) => {
 
   socket.on('noti customer', (queueId, placeName, customer) => {
     if (queueMap[queueId]) {
-      // console.log('A customer is to be notified for their booking at', placeName);
-      let mailOptions = {
-        from: configs.emailUsername + '@gmail.com',
-        to: customer.email,
-        subject: 'Your table booked at ' + placeName + ' is ready!',
-        text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
-          + placeName + '\n\nBon Appétit,\nQ.'
-      };
+      helpers.sendEmail(configs.emailUsername, customer, placeName, transporter);
 
       //Don't even try to text if it's not valid format with country code. only works for USA
       let phoneToUse = helpers.filterPhoneForNexmo(customer.mobile);
@@ -368,14 +357,6 @@ io.on('connection', (socket) => {
       if (phoneToUse.length === 11) {
         helpers.sendSMS(nexmo, configs.virtualNumber, phoneToUse, placeName);
       }
-
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
 
       io.to(queueMap[queueId]).emit('noti', 'your table is ready!');
     }
