@@ -13,9 +13,7 @@ const ResultList = (props) => {
   return (
     <div>
       <h2 className='form-signin-heading'>Select your restaurant:</h2>
-
       {list}
-
     </div>
   )
 }

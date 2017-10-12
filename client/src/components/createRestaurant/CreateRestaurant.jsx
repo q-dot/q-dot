@@ -53,7 +53,13 @@ class CreateRestaurant extends React.Component {
     }
 
     $.ajax(options)
-      .then((data) => {this.setState({results: data})})
+      .then((data) => {
+        this.setState({results: data});
+        const elem = ReactDOM.findDOMNode(this.refs.searchList);
+        if (elem) {
+          elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+        }
+      })
       .fail((data) => {console.log(data)});
   }
 
@@ -62,12 +68,12 @@ class CreateRestaurant extends React.Component {
       selectedRestaurant: this.state.results[index]
     }, () => {
       console.log(this.state.selectedRestaurant);
-      const elem = ReactDOM.findDOMNode(this.refs.readyButton);
-
-      if (elem) {
-        console.log('attempt to scroll to', elem);
-        elem.scrollIntoView({ behavior: 'smooth' });
-      }
+      setTimeout(() => {
+        const elem = ReactDOM.findDOMNode(this.refs.readyButton);
+        if (elem) {
+          elem.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     });
   }
 
@@ -138,11 +144,14 @@ class CreateRestaurant extends React.Component {
         <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
         <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
         <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
-        <div className='buffer'></div>
+        <div ref='searchList' className='buffer'></div>
           {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
           : null}
-        <div ref='readyButton' />
-        {this.state.selectedRestaurant ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button> : null}
+        <div ref='readyButton' className='buffer' />
+
+        {this.state.selectedRestaurant
+          ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
+          : null}
 
 
 
