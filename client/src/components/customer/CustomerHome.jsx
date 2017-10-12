@@ -28,7 +28,7 @@ class CustomerHome extends React.Component {
         console.log('successfully grabbed restaurant data', data); 
         this.setState({ restaurantList: data });
       },
-      failure: (error) => {
+      error: (error) => {
         console.log('failed to grab restaurant data', error);
       }
     });
