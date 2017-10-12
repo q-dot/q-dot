@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 class SelectedRestaurant extends React.Component {
   constructor(props) {
+    console.log('selected restaurant: ', props)
     super(props);
     this.customerInfoSubmitted = this.customerInfoSubmitted.bind(this);
     this.state = {
@@ -30,7 +31,7 @@ class SelectedRestaurant extends React.Component {
       method: 'GET',
       url: `/restaurants?restaurantId=${id}`,
       success: (data) => {
-        console.log('successfully grabbed current restaurant data', data);
+        console.log('successfully grabbed current restaurant data', data); // not logging correctly
         this.setState({ currentRestaurant: data });
       },
       failure: (error) => {

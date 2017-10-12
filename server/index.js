@@ -57,6 +57,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
+
+// TODO: add DB lookup to chain
 app.get('/manager', (req, res, next) => {
 
   if (req.user) {
