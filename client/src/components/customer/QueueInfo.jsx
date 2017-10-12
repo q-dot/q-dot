@@ -37,8 +37,9 @@ class QueueInfo extends React.Component {
   }
 
   getCurrentCustomerId() {
-    let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
+    // CAUTION!!!! any changes in url structure will break this
+    let windowUrl = window.location.href;  
+    let id = windowUrl.slice(windowUrl.lastIndexOf('=') + 1);
 
     $.ajax({
       method: 'GET',

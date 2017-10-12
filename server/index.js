@@ -128,14 +128,16 @@ app.post('/dummydata', (req, res) => {
 });
 
 //add a customer to the queue at a restaurant
+// this throws error 418
 app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
+  console.log('POST to queues: ', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
     res.status(400).send('Bad Request');
   } else {
     dbQuery.addToQueue(req.body)
       .then(response => {
+        console.log('res from adding to queue db: ', response);
         const result = {
           name: helpers.nameFormatter(req.body.name),
           mobile: helpers.phoneNumberFormatter(req.body.mobile)
@@ -150,8 +152,11 @@ app.post('/queues', (req, res) => {
         result.wait = response.wait;
         result.queueInFrontList = response.queueList;
         req.session.queueInfo = result;
+        console.log('result from server: ', result);
         res.send(result);
         //automatically update manager side client
+        // this just sends the same id back
+        console.log('sending back to client rest id: ', req.body.restaurantId);
         socketUpdateManager(req.body.restaurantId);
       })
       .catch(err => {
