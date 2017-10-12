@@ -10,7 +10,7 @@ body {
 
 .queue-body {
   margin-top: 150px;
-  margin-left: 80px;
+  margin-left: 160px;
 }
 
 .queue-body, .queue-map {
@@ -18,11 +18,13 @@ body {
   float:left;
 }
 
-canvas {
-  width: '600px'; 
-  height: '600px';
-  float: center;
-}
+.mapContainer {
+  background-color: black;
+  width: 600px;
+  height: 500px;
+  margin-left: 180px;
+}  
+
 
 .materialize-red {
   background-color: #e51c23 !important;

@@ -1,7 +1,7 @@
 import React from 'react';
 import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
-import QueueInfoMap from './QueueInfoMap.jsx';
+import MapContainer from './MapContainer.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
@@ -11,6 +11,8 @@ class QueueInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      userAddress: '',
+      restaurantAddress: '',
       currentCustomer: {
         restaurant: {
           name: ''
@@ -27,15 +29,13 @@ class QueueInfo extends React.Component {
       this.playReadySound();
       this.setState({ ready: true });
     });
-  }
+
+    this.getCurrentCustomerId = this.getCurrentCustomerId.bind(this);
+  } 
 
   playReadySound() {
     let audio = new Audio('./Table-ready.mp3');
     audio.play();
-  }
-
-  componentDidMount() {
-    this.getCurrentCustomerId();
   }
 
   getCurrentCustomerId() {
@@ -47,11 +47,17 @@ class QueueInfo extends React.Component {
       method: 'GET',
       url: `/queues?queueId=${id}`,
       success: (data) => {
-        console.log('successfully grabbed queue data for customer', data);
-        this.setState({ currentCustomer: data });
+        //console.log('successfully grabbed queue data for customer', data);
         console.log('this is the data: ', data);
+        //this.googeldirections();
+        this.setState({ 
+          currentCustomer: data, 
+          userAddress: data.address,
+          restaurantAddress: data.restaurant.address
+        });
         // report queueId to server socket
         this.socket.emit('customer report', id);
+
       },
       error: (error) => {
         console.log('failed to grab queue data for customer', error);
@@ -59,13 +65,18 @@ class QueueInfo extends React.Component {
     });
   }
 
+
   clickedBack() {
     $.get({
       url: '/redirect',
       success: () => {
-        window.location.href = "/customer";
+        window.location.href = '/customer';
       }
     });
+  }  
+
+  componentDidMount() {
+    this.getCurrentCustomerId();
   }
 
   render() {
@@ -88,7 +99,7 @@ class QueueInfo extends React.Component {
         <div className="queue-map">  
           <br/>
           <br/>
-          <QueueInfoMap client={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
+          <MapContainer user={this.state.userAddress} restaurat={this.state.restaurantAddress}/>
           <br/>
           <br/>
           <br/>
@@ -100,3 +111,4 @@ class QueueInfo extends React.Component {
 }
 
 export default QueueInfo;
+
