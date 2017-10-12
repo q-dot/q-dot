@@ -77,23 +77,6 @@ class CreateRestaurant extends React.Component {
     });
   }
 
-  createRestaurant(index) {
-    let options = {
-      url: '../../restaurants',
-      method: 'POST',
-      data: {
-        name: this.state.selectedRestaurant.name,
-        address: `${this.state.selectedRestaurant.location.address1}, ${this.state.selectedRestaurant.location.city}, ${this.state.selectedRestaurant.location.state}, ${this.state.selectedRestaurant.location.zip_code}`,
-        phone: this.state.selectedRestaurant.phone,
-        image: this.state.selectedRestaurant.image_url,
-        status: 'Open', // should prob be closed
-        'average_wait': 10,
-        'total_wait': 10
-      }
-    }
-
-// TODO: handle serverside too! comment out post to manager endpoint
-
 // divide req.body into rest. data object and manager data
   createRestaurant(index) {
     let options = {
