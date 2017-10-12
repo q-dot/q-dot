@@ -16,7 +16,8 @@ class ManagerApp extends React.Component {
 
     this.state = {
       queues: undefined,
-      restaurantInfo: {}
+      restaurantInfo: {},
+      queueId: null
     };
 
     // socket initialize
@@ -47,8 +48,9 @@ class ManagerApp extends React.Component {
   }
 
   notiCustomer(queueId, customer) {
-    console.log(`noti sended to queueId: ${queueId}`);
+    console.log(`noti sent to queueId: ${queueId}`);
     // console.log(this.state.restaurantInfo);
+    this.setState({queueId: queueId});
     this.socket.emit('noti customer', queueId, this.state.restaurantInfo.name, customer);
   }
 
@@ -124,7 +126,7 @@ class ManagerApp extends React.Component {
             </div>
             <div className="col-md-6">
               <TablesManager notiCustomer={this.notiCustomer.bind(this)} queues={this.state.queues}/>
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <CustomerList queueId={this.state.queueId} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
         </div>
