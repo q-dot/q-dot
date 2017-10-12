@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 class SelectedRestaurant extends React.Component {
   constructor(props) {
-    console.log('selected restaurant: ', props)
+    console.log('selected restaurant: x', props)
     super(props);
     this.customerInfoSubmitted = this.customerInfoSubmitted.bind(this);
     this.state = {
@@ -25,13 +25,13 @@ class SelectedRestaurant extends React.Component {
 
   getRestaurant() {
     let windowUrl = window.location.href;
-    let id = windowUrl.slice(-1);
+    let id = windowUrl.slice(windowUrl.lastIndexOf('/') + 1);
 
     $.ajax({
       method: 'GET',
       url: `/restaurants?restaurantId=${id}`,
       success: (data) => {
-        console.log('successfully grabbed current restaurant data', data); // not logging correctly
+        console.log('successfully grabbed current restaurant data', data);
         this.setState({ currentRestaurant: data });
       },
       failure: (error) => {
@@ -50,7 +50,9 @@ class SelectedRestaurant extends React.Component {
 
   render() {
     const restaurantImg = {
-      backgroundImage: `url(../${this.state.currentRestaurant.image})`
+      // uncomment this for dummy data pics to load instead
+      // backgroundImage: `url(../${this.state.currentRestaurant.image})`
+      backgroundImage: `url(${this.state.currentRestaurant.image})`
     };
 
     return (
