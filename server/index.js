@@ -30,6 +30,7 @@ app.use(session({
     port: process.env.REDISPORT || 6379
   }),
   secret: process.env.SESSIONSECRET || 'nyancat',
+  saveuninitialized: false,
   cookie: {
     maxAge: 18000000
   },
