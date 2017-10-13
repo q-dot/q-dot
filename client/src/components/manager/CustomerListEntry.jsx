@@ -2,12 +2,7 @@ import React from 'react';
 import { hinge } from 'react-animations';
 import Radium, {StyleRoot} from 'radium';
 
-const styles = {
-  hinge: {
-    animation: 'x 2.4s',
-    animationName: Radium.keyframes(hinge, 'hinge')
-  }
-};
+
 
 class CustomerListEntry extends React.Component {
 
@@ -22,6 +17,12 @@ class CustomerListEntry extends React.Component {
       shouldHinge: false
     };
     this.handleClick = this.handleClick.bind(this);
+    this.styles = {
+      hinge: {
+        animation: 'x 2.4s',
+        animationName: Radium.keyframes(hinge, 'hinge')
+      }
+    };
     let timer;
 
   }
@@ -76,7 +77,7 @@ class CustomerListEntry extends React.Component {
 
     return (
       <StyleRoot>
-        <div className="row panel-body" style={this.state.shouldHinge ? styles.hinge : null}>
+        <div className="row panel-body" style={this.state.shouldHinge ? this.styles.hinge : null}>
           <div className="col-md-7">
             <div className="customer-entry-head">
               <h3 className="customer-entry-text">{this.props.queue.customer.name}</h3>
