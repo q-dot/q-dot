@@ -7,7 +7,7 @@ const CustomerNav = () => (
       <li><a href="/">home</a></li>
       <li className="divider"></li>
       <li><a href="../manager">manager</a></li>
-      <li><a href="../createrestaurant">add restaurant</a></li>
+      <li><a href="../createRestaurant">add restaurant</a></li>
     </ul>
     <nav>
       <div className="nav-wrapper">
