@@ -6,7 +6,7 @@ echo Existing 'deployToHeroku' branch will be force deleted and a new one create
 read -p "Continue? [yn] " answer
 if [[ $answer = y ]]; then
   echo Running deployment script
-  git branch -d deployToHeroku
+  git branch -D deployToHeroku
   git checkout -b deployToHeroku
   git add .
   git add --force node_modules/
