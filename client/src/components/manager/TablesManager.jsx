@@ -11,14 +11,20 @@ class TablesManager extends React.Component {
   selectCustomer(size) {
     let intSize = parseInt(size.target.value);
     let queues = this.props.queues;
+    let tempPick = {
+      size: 0
+    };
 
     for (let i in queues) {
       if (queues[i].size <= intSize) {
-        console.log('next customer is ', queues[i]);
-        this.props.notiCustomer(queues[i].id, queues[i].customer);
-        break;
+        if (queues[i].size > tempPick.size) {
+          tempPick = queues[i];
+        }
       }
     }
+    console.log(tempPick)
+
+    this.props.notiCustomer(tempPick.id, tempPick.customer);
   }
 
   render () {
