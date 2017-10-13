@@ -59,7 +59,7 @@ app.use(passport.session());
 
 // TODO: add DB lookup to chain
 app.get('/manager', (req, res, next) => {
-
+  console.log('GET manager');
   if (req.user) {
     console.log('logged in');
     next();
@@ -234,7 +234,11 @@ app.put('/queues', (req, res) => {
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send('/manager'));
+    .then(() => dbQuery.findRestaurauntByManager(req.user.id))
+    .then(results => {
+      console.log('found', results.dataValues.id);
+      res.send(`/manager?id=${results.dataValues.id}`);
+    });
 });
 
 //request for logout of manager page of a restaurant
@@ -243,7 +247,10 @@ app.get('/logout', (req, res) => {
     .then(results => {
       req.logout();
       res.redirect('/managerlogin');
-    });
+    })
+    .catch((err) => {
+      console.log('error adding audit hist', err);
+    })
 });
 
 //this must have originally been for an existing manager adding another manager
