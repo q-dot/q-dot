@@ -14,6 +14,7 @@ if [[ $answer = y ]]; then
   git commit -m "Preparing to deploy to Heroku"
   git status
   git push heroku deployToHeroku:master --force
+  curl -X POST http://q-deux-staging.herokuapp.com/dummydata
   git branch
 else
   echo Cancelled deployment script
