@@ -99,7 +99,7 @@ class CreateRestaurant extends React.Component {
 
     $.ajax(options)
       .then((data) => {
-        $.ajax('/managerlogin');
+        window.location.href = '/managerlogin';
       })
       .fail((data) => {console.log(data)});
   }
