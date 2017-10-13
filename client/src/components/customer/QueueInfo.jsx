@@ -21,7 +21,8 @@ class QueueInfo extends React.Component {
           name: ''
         }
       },
-      ready: false
+      ready: false,
+      timer: ''
     };
     // socket initialize
     this.socket = io();
@@ -30,6 +31,7 @@ class QueueInfo extends React.Component {
       console.log(message);
       window.alert(message);
       this.playReadySound();
+      this.startTimer();
       this.setState({ ready: true });
     });
 
@@ -79,28 +81,52 @@ class QueueInfo extends React.Component {
 
   componentDidMount() {
     this.getCurrentCustomerId();
+    //
+  }
+
+  startTimer() {
+    let i = 180000;
+    this.setState({timer: this.printTime(i)});
+    let interval = 1000;
+    this.timer = setInterval(() => {
+      this.setState({timer: this.printTime(i)});
+      if (i > 0) {
+        i -= 1000;
+      }
+    }, interval);
+  }
+
+  printTime(ms) {
+    let time = ms / 1000;
+    let min = Math.floor(time / 60);
+    let sec = Math.floor(time % 60);
+    sec = ('0' + sec).slice(-2);
+    return min.toString() + ':' + sec.toString();
   }
 
   render() {
     return (
       <div className="customer-queue-info-container">
         <CustomerBanner customer={this.state.currentCustomer}/>
-        <div className="queue-body">
-          <h5>YOUR QUEUE NUMBER IS</h5>
-          {
-            this.state.ready
-              ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a></div>
-              : <div className="queue-position-display">
-                <span className="position-number">{this.state.currentCustomer.position}</span>
-                <h6>your approximate wait time is:</h6>
-                <span className="wait-time-indicator">{this.state.currentCustomer.wait}</span>
-                <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
-              </div>
-          }
-        </div>  
-        <div>  
-          <MapContainer className='queue-map' user={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
-        </div>  
+        <div className="divider"/>
+        <div className="row">
+          <div className="col s6">
+            <h5>YOUR QUEUE NUMBER IS</h5>
+            {
+              this.state.ready
+                ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a><h3>{this.state.timer}</h3></div>
+                : <div className="queue-position-display">
+                  <span className="position-number">{this.state.currentCustomer.position}</span>
+                  <h6>your approximate wait time is:</h6>
+                  <span className="wait-time-indicator">{this.state.currentCustomer.wait}</span>
+                  <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
+                </div>
+            }
+          </div>  
+          <div className="col s6">  
+            <MapContainer user={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
+          </div>  
+        </div>
       </div>
     );
   }
