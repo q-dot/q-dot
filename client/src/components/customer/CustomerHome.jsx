@@ -41,7 +41,8 @@ class CustomerHome extends React.Component {
       var availableTags = restaurantList;
       $('#filterBar').autocomplete({
         source: availableTags,
-        select: (event) => {
+        select: (event, ui) => {
+          self.state.filter = ui.item.value;
           self.updateFilteredList();
         }
       });
@@ -66,14 +67,13 @@ class CustomerHome extends React.Component {
 
   updateFilter (e) {
     this.setState({filter: e.target.value});
-    console.log('Filter updated:', this.state.filter);
   }
 
   updateFilteredList () {
     if (this.state.filter === '') {
       this.setState({filteredList: this.state.restaurantList});
     }
-    console.log('Update filtered list');
+    console.log('Update filtered list to filter:', this.state.filter);
   }
 
   render() {
