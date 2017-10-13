@@ -20,6 +20,7 @@ const yelp = require('yelp-fusion');
 const nodemailer = require('nodemailer');
 const configs = require('./config/config.js');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -131,9 +132,11 @@ app.post('/dummydata', (req, res) => {
 //add a customer to the queue at a restaurant
 // this throws error 418
 app.post('/queues', (req, res) => {
+  
   console.log('POST to queues: ', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
+
     res.status(400).send('Bad Request');
   } else {
     dbQuery.addToQueue(req.body)
@@ -145,6 +148,9 @@ app.post('/queues', (req, res) => {
         };
         if (req.body.email) {
           result.email = req.body.email;
+        }
+        if (req.body.address) {
+          result.address = req.body.address;
         }
         result.queueId = response.queueId;
         result.size = response.size;
@@ -190,8 +196,8 @@ app.get('/queues', (req, res) => {
     var results = {};
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
-        console.log('partialResults on server get: ', partialResults.costumer);
         results.name = partialResults.customer.name;
+        results.address = partialResults.customer.address;
         results.mobile = partialResults.customer.mobile;
         results.email = partialResults.customer.email;
         results.queueId = partialResults.id;
@@ -300,6 +306,7 @@ app.post('/restaurants', (req, res) => {
       restaurantInfo.managerId = managerId;
       dbQuery.addRestaurant(restaurantInfo);
     })
+  dbQuery.addRestaurant(testData.restaurant)
     .then((results) => {
       res.sendStatus(201);
     })
@@ -330,6 +337,15 @@ app.post('/yelp', (req, res) => {
   })
   .catch(e => {
     console.log(e);
+  });
+});
+
+app.get('/map', (req, res) => {
+
+  request(`https://maps.googleapis.com/maps/api/directions/json?origin=${req.query.user}&destination=${req.query.restaurant}`, function (error, response, body) {
+    if (error) { console.error(error); }
+    console.log('this is data from server: ', body);
+    res.json(body);  
   });
 });
 
