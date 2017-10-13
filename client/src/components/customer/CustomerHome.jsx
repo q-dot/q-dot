@@ -36,10 +36,14 @@ class CustomerHome extends React.Component {
     let restaurantList = data.map((ele) => {
       return ele.name;
     });
+    let self = this;
     $(function() {
       var availableTags = restaurantList;
       $('#filterBar').autocomplete({
-        source: availableTags
+        source: availableTags,
+        select: (event) => {
+          self.updateFilteredList();
+        }
       });
     });
   }
@@ -62,6 +66,7 @@ class CustomerHome extends React.Component {
 
   updateFilter (e) {
     this.setState({filter: e.target.value});
+    console.log('Filter updated:', this.state.filter);
   }
 
   updateFilteredList () {
