@@ -28,7 +28,7 @@ class QueueInfo extends React.Component {
     this.socket = io();
     // dynamically update if table is ready
     this.socket.on('noti', (message) => {
-      console.log(message);
+      // $.get('/endsession');
       window.alert(message);
       this.playReadySound();
       this.startTimer();
@@ -36,7 +36,7 @@ class QueueInfo extends React.Component {
     });
 
     this.getCurrentCustomerId = this.getCurrentCustomerId.bind(this);
-  } 
+  }
 
   playReadySound() {
     let audio = new Audio('./Table-ready.mp3');
@@ -46,7 +46,7 @@ class QueueInfo extends React.Component {
 
   getCurrentCustomerId() {
     // CAUTION!!!! any changes in url structure will break this
-    let windowUrl = window.location.href;  
+    let windowUrl = window.location.href;
     let id = windowUrl.slice(windowUrl.lastIndexOf('=') + 1);
 
 
@@ -54,8 +54,8 @@ class QueueInfo extends React.Component {
       method: 'GET',
       url: `/queues?queueId=${id}`,
       success: (data) => {
-        this.setState({ 
-          currentCustomer: data, 
+        this.setState({
+          currentCustomer: data,
           userAddress: data.address,
           restaurantAddress: data.restaurant.address
         });
@@ -72,12 +72,12 @@ class QueueInfo extends React.Component {
 
   clickedBack() {
     $.get({
-      url: '/redirect',
+      url: '/endsession',
       success: () => {
         window.location.href = '/customer';
       }
     });
-  }  
+  }
 
   componentDidMount() {
     this.getCurrentCustomerId();
@@ -122,10 +122,10 @@ class QueueInfo extends React.Component {
                   <p className="groups-in-front-indicator">There are currently {this.state.currentCustomer.queueInFrontCount} groups in front of you</p>
                 </div>
             }
-          </div>  
-          <div className="col s6">  
+          </div>
+          <div className="col s6">
             <MapContainer user={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
-          </div>  
+          </div>
         </div>
       </div>
     );
@@ -133,4 +133,3 @@ class QueueInfo extends React.Component {
 }
 
 export default QueueInfo;
-
