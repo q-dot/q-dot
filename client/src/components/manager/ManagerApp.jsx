@@ -17,7 +17,7 @@ class ManagerApp extends React.Component {
     this.state = {
       queues: undefined,
       restaurantInfo: {},
-      queueId: null
+      queueId: null,
       restaurantId: window.location.href.slice(window.location.href.lastIndexOf('=') + 1)
     };
 
