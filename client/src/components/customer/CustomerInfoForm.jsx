@@ -68,6 +68,10 @@ class CustomerInfoForm extends React.Component {
   }
 
   submitCustomerInfo() {
+    if (restStatus !== 'Open') {
+      window.alert('Cannot queue up: Restaurant queue is closed!');
+      return;
+    }
     let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
     let windowUrl = window.location.href;
     // let id = windowUrl.slice(-1); // AHHHHHHHHHHHHHHHH
@@ -139,4 +143,3 @@ class CustomerInfoForm extends React.Component {
 }
 
 export default CustomerInfoForm;
-
