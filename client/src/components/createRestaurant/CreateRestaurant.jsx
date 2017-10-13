@@ -23,7 +23,6 @@ class CreateRestaurant extends React.Component {
     this.submitSearch = this.submitSearch.bind(this);
     this.selectRestaurant = this.selectRestaurant.bind(this);
     this.createRestaurant = this.createRestaurant.bind(this);
-    // this.createManager = this.createManager.bind(this);
   }
 
   handleQueryChange(e) {
@@ -77,7 +76,6 @@ class CreateRestaurant extends React.Component {
     });
   }
 
-// divide req.body into rest. data object and manager data
   createRestaurant(index) {
     let options = {
       url: '../../restaurants',
@@ -100,21 +98,11 @@ class CreateRestaurant extends React.Component {
     }
 
     $.ajax(options)
-      .then((data) => {console.log(data)})
+      .then((data) => {
+        $.ajax('/managerlogin');
+      })
       .fail((data) => {console.log(data)});
   }
-
-  // createManager() {
-  //   let options = {
-  //     url: '../../manager',
-  //     method: 'POST',
-  //     data:
-  //   }
-
-  //   $.ajax(options)
-  //     .then((data) => {console.log(data)})
-  //     .fail((data) => {console.log(data)});
-  // }
 
   render() {
     return (
