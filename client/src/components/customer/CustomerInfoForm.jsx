@@ -85,7 +85,7 @@ class CustomerInfoForm extends React.Component {
         restaurantId: id
       }),
       contentType: 'application/json',
-      success: (data) => { // not posting successfully
+      success: (data) => {
         console.log('this was a successful post request', data);
         this.props.customerInfoSubmitted(data.queueId, data.position);
         window.location.replace(`/customer/queueinfo?queueId=${data.queueId}`);

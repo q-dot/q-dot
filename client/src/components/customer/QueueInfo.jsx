@@ -51,7 +51,7 @@ class QueueInfo extends React.Component {
         // report queueId to server socket
         this.socket.emit('customer report', id);
       },
-      failure: (error) => {
+      error: (error) => {
         console.log('failed to grab queue data for customer', error);
       }
     });

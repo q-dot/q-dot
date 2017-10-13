@@ -40,7 +40,7 @@ class ManagerAudit extends React.Component {
           auditHistory: []
         });
       },
-      failure: function(err) {
+      error: function(err) {
         console.log(err);
       }
     });

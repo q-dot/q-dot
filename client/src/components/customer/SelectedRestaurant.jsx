@@ -34,7 +34,7 @@ class SelectedRestaurant extends React.Component {
         console.log('successfully grabbed current restaurant data', data);
         this.setState({ currentRestaurant: data });
       },
-      failure: (error) => {
+      error: (error) => {
         console.log('failed to grab current restaurant data', error);
       }
     });

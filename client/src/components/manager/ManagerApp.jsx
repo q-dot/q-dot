@@ -17,8 +17,11 @@ class ManagerApp extends React.Component {
     this.state = {
       queues: undefined,
       restaurantInfo: {},
-      queueId: null
+      queueId: null,
+      restaurantId: window.location.href.slice(window.location.href.lastIndexOf('=') + 1)
     };
+
+    // console.log('passed rest id: ', this.state.restaurantId);
 
     // socket initialize
     this.socket = io();
@@ -89,7 +92,7 @@ class ManagerApp extends React.Component {
 
   reloadData() {
     $.ajax({
-      url: '/restaurants?restaurantId=1',
+      url: '/restaurants?restaurantId=' + this.state.restaurantId,
       success: (data) => {
         console.log(data);
         this.setState(
@@ -99,7 +102,8 @@ class ManagerApp extends React.Component {
           });
         // report restaurantId to server socket
         this.socket.emit('manager report', this.state.restaurantInfo.id);
-        let imageURL = `url(/${data.image})`;
+        let imageURL = `url(${data.image})`;
+        // let imageURL = `url(/${data.image})`;
         $('.jumbotron-billboard').css('background', imageURL);
       },
       error: (err) => {

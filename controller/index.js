@@ -32,6 +32,13 @@ const findInfoForAllRestaurants = () => {
     });
 };
 
+const findRestaurauntByManager = (managerId) => {
+  return db.Restaurant.findOne({where: {
+      managerId: managerId // CHANGE THIS TO MANAGERID AFTER TESTING
+    }
+  });
+}
+
 //update restaurant open/close status
 const updateRestaurantStatus = (info) => {
   return db.Restaurant.update({status: info.status}, {where: {id: info.restaurantId}});
@@ -180,5 +187,6 @@ module.exports = {
   getCustomerInfo: getCustomerInfo,
   getManagerInfo: getManagerInfo,
   removeFromQueue: removeFromQueue,
-  addRestaurant: addRestaurant
+  addRestaurant: addRestaurant,
+  findRestaurauntByManager: findRestaurauntByManager
 };

@@ -35,7 +35,7 @@ class ManagerLogin extends React.Component {
         });
         window.location.href = data;
       },
-      failure: (err) => {
+      error: (err) => {
         console.log('failed to load page', err);
       },
       statusCode: {
