@@ -101,13 +101,6 @@ body {
   width: 35%;
 }
 
-.innerPane2 {
-  display: table-cell;
-  width: 1%;
-  height: 100vh;
-  border-left: 1px solid black;
-}
-
 .horLine {
   border: 1px solid black;
 }
