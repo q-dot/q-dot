@@ -85,7 +85,8 @@ class CreateRestaurant extends React.Component {
           image: this.state.selectedRestaurant.image_url,
           status: 'Open', // should prob be closed
           'average_wait': 10,
-          'total_wait': 10
+          'total_wait': 10,
+          open: this.state.selectedRestaurant.hours
         },
         manager: {
           username: this.state.username,
