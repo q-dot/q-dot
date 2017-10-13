@@ -10,33 +10,6 @@ body {
   background: #f4f7f9 !important;
 }
 
-.map-info {
-/*  margin-left: 10px;
-  padding-left: 50px;
-  padding-right: 50px;*/
-  margin-top
-  padding-top: 30px;
-  padding-bottom: 30px;
-  border: 5px solid #053C5E;
-  background-color: #12788E;
-  color: white;
-}
-
-.queue-body {
-  margin-top: 150px;
-  margin-bottom: 90px;
-  margin-left: 160px;
-}
-.map-div {
-  margin-top: 150px;
-  margin-right: 160px;
-}
-
-.queue-body, .queue-map{
-  display: inline;
-  float: left;
-} 
-
 .materialize-red {
   background-color: #e51c23 !important;
 }
@@ -2224,7 +2197,6 @@ summary {
  * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
  */
 audio,
-canvas,
 progress,
 video {
   display: inline-block;
@@ -10010,7 +9982,25 @@ nav li a {
   left: 50%;
 }
 
+.map-info {
+  height: 100px;
+  width: 70%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 5px solid #053C5E;
+  background-color: #12788E;
+  color: white;
+  margin: auto;
+}
 
+#map {
+  border-left: 1px solid #fff;
+  position: sticky;
+  height: 300px;
+  width: 500px;
+  margin: auto;
+  text-align: left;
+}
 
 
 

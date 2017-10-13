@@ -9,7 +9,8 @@ class MapContainer extends React.Component {
     this.state = {
       poly: '',
       distance: '',
-      duration: ''
+      duration: '',
+      renderMap: false
     };
 
     this.flip = this.flip.bind(this);
@@ -24,7 +25,14 @@ class MapContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!this.state.renderMap) {
+      this.getMap(nextProps);
+      this.setState({renderMap: true});
+    }
+ 
+  }  
 
+  getMap(nextProps) {
     $.ajax({
       method: 'GET',
       url: '/map',
@@ -44,7 +52,7 @@ class MapContainer extends React.Component {
           container: 'map',
           style: 'mapbox://styles/mapbox/streets-v9',
           center: [ -122.407437, 37.787994],
-          zoom: 13
+          zoom: 12
         });
         
         var nav = new mapboxgl.NavigationControl();
@@ -77,24 +85,25 @@ class MapContainer extends React.Component {
               'line-width': 8
             },
           }); 
-        });  
+        });
       },
       failure: (error) => {
         console.log('failed to grab queue data for customer', error);
       }
     });
-  }  
+  }
+
 
   render() {
     return (
       <div>
-        <div className='map-div' id="map" style={{width: '600px', height: '500px'}}></div>
+        <br/>
+        <div className='map' id="map"></div>
         <br/>
         <br/>
-        <div className='map-info'>
-          <br/>
-          <h5>you are {this.state.distance} from the restaurant</h5>
-          <h5>it will take {this.state.duration} to get there</h5>
+        <div className="map-info">
+          <p>you are {this.state.distance} from the restaurant</p>
+          <p>it will take {this.state.duration} to get there</p>
         </div>
       </div>  
     );
