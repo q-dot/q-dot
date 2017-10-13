@@ -16,7 +16,6 @@ class CustomerList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log('these are new props', newProps);
     if (newProps.queueId) {
       this.initiateTimer(newProps.queueId);
     }
@@ -32,8 +31,6 @@ class CustomerList extends React.Component {
       }
     }
     this.entries = [];
-    console.log('these are entries after the click', this.entries);
-
   }
 
   showModal(queue) {
@@ -50,7 +47,6 @@ class CustomerList extends React.Component {
     }) : <div>Nobody In Queue</div>;
     
     let removeCustomer = () => {
-      console.log('this is the modal queue', this.state.modalQueue.id);
       for (let i in this.entries) {
         if (!this.entries[i]) {
           continue;

@@ -22,7 +22,6 @@ class TablesManager extends React.Component {
         }
       }
     }
-    console.log(tempPick)
 
     this.props.notiCustomer(tempPick.id, tempPick.customer);
   }
