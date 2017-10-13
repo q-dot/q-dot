@@ -102,4 +102,3 @@ class MapContainer extends React.Component {
 }
 
 export default MapContainer;
-

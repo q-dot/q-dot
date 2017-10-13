@@ -11,6 +11,9 @@ class QueueInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      poly: '',
+      distance: '',
+      duration: '',
       userAddress: '',
       restaurantAddress: '',
       currentCustomer: {
@@ -38,18 +41,17 @@ class QueueInfo extends React.Component {
     audio.play();
   }
 
+
   getCurrentCustomerId() {
     // CAUTION!!!! any changes in url structure will break this
     let windowUrl = window.location.href;  
     let id = windowUrl.slice(windowUrl.lastIndexOf('=') + 1);
 
+
     $.ajax({
       method: 'GET',
       url: `/queues?queueId=${id}`,
       success: (data) => {
-        //console.log('successfully grabbed queue data for customer', data);
-        console.log('this is the data: ', data);
-        //this.googeldirections();
         this.setState({ 
           currentCustomer: data, 
           userAddress: data.address,
@@ -96,14 +98,8 @@ class QueueInfo extends React.Component {
               </div>
           }
         </div>  
-        <div className="queue-map">  
-          <br/>
-          <br/>
-          <MapContainer user={this.state.userAddress} restaurat={this.state.restaurantAddress}/>
-          <br/>
-          <br/>
-          <br/>
-          <br/>
+        <div>  
+          <MapContainer className='queue-map' user={this.state.currentCustomer.address} restaurant={this.state.currentCustomer.restaurant.address}/>
         </div>  
       </div>
     );

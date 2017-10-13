@@ -20,6 +20,7 @@ const yelp = require('yelp-fusion');
 const nodemailer = require('nodemailer');
 const configs = require('./config/config.js');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -296,7 +297,6 @@ app.delete('/manager/history', (req, res) => {
 
 // need to add manager before restaurant b/c FK on restaurant
 app.post('/restaurants', (req, res) => {
-<<<<<<< HEAD
   var passwordInfo = dbManagerQuery.genPassword(req.body.manager.password, dbManagerQuery.genSalt());
 
   dbManagerQuery.addManager(req.body.manager.username, passwordInfo.passwordHash, passwordInfo.salt)
@@ -306,9 +306,7 @@ app.post('/restaurants', (req, res) => {
       restaurantInfo.managerId = managerId;
       dbQuery.addRestaurant(restaurantInfo);
     })
-=======
   dbQuery.addRestaurant(testData.restaurant)
->>>>>>> client and restaurant address added to frontend and database
     .then((results) => {
       res.sendStatus(201);
     })
@@ -316,7 +314,6 @@ app.post('/restaurants', (req, res) => {
       console.log('Error POST /restaurants ', err);
       res.sendStatus(401);
     });
-<<<<<<< HEAD
 });
 
 // *** YELP ***
@@ -341,8 +338,15 @@ app.post('/yelp', (req, res) => {
   .catch(e => {
     console.log(e);
   });
-=======
->>>>>>> client and restaurant address added to frontend and database
+});
+
+app.get('/map', (req, res) => {
+
+  request(`https://maps.googleapis.com/maps/api/directions/json?origin=${req.query.user}&destination=${req.query.restaurant}`, function (error, response, body) {
+    if (error) { console.error(error); }
+    console.log('this is data from server: ', body);
+    res.json(body);  
+  });
 });
 
 

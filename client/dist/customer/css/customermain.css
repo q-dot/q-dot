@@ -2,29 +2,40 @@
  * Materialize v0.100.2 (http://materializecss.com)
  * Copyright 2014-2017 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
+ #053C5E blue
+ #12788E green
  */
 
 body {
   background: #f4f7f9 !important;
 }
 
+.map-info {
+/*  margin-left: 10px;
+  padding-left: 50px;
+  padding-right: 50px;*/
+  margin-top
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border: 5px solid #053C5E;
+  background-color: #12788E;
+  color: white;
+}
+
 .queue-body {
   margin-top: 150px;
+  margin-bottom: 90px;
   margin-left: 160px;
 }
-
-.queue-body, .queue-map {
-  display:inline;
-  float:left;
+.map-div {
+  margin-top: 150px;
+  margin-right: 160px;
 }
 
-.mapContainer {
-  background-color: black;
-  width: 600px;
-  height: 500px;
-  margin-left: 180px;
-}  
-
+.queue-body, .queue-map{
+  display: inline;
+  float: left;
+} 
 
 .materialize-red {
   background-color: #e51c23 !important;
