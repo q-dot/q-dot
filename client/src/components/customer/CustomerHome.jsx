@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import SelectedRestaurant from './SelectedRestaurant.jsx';
@@ -25,7 +27,7 @@ class CustomerHome extends React.Component {
       method: 'GET',
       url: '/restaurants',
       success: (data) => {
-        console.log('successfully grabbed restaurant data', data); 
+        console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
       },
       error: (error) => {
@@ -36,10 +38,13 @@ class CustomerHome extends React.Component {
 
   render() {
     return (
-      <div className="customer-home">
+      <div className="customer-home" ref="top">
         <CustomerBanner />
         <div className="select-restaurant-container">
           <h4>Help me queue up at...</h4>
+          <div style={{textAlign: 'center'}}>
+            <input type="text" placeholder="Filter..." style={{width: '60%', textAlign: 'center'}}></input>
+          </div>
           {this.state.restaurantList.map(restaurant => {
             return (
               <div key={restaurant.id}>
@@ -48,6 +53,12 @@ class CustomerHome extends React.Component {
             )
           }
           )}
+          <button className='btn btn-lg btn-primary btn-block' style={{margin: 'auto'}} onClick={() => {
+            const elem = ReactDOM.findDOMNode(this.refs.top);
+            if (elem) {
+              elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            }
+          }}>Back to Top</button>
         </div>
       </div>
     );
@@ -56,4 +67,3 @@ class CustomerHome extends React.Component {
 }
 
 export default CustomerHome;
-
