@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import SelectedRestaurant from './SelectedRestaurant.jsx';
 import RestaurantCard from './RestaurantCard.jsx';
 import $ from 'jquery';
+import './lib/jquery-ui.min.css';
+import './lib/jquery-ui.min.js';
 import { Link } from 'react-router-dom';
 
 class CustomerHome extends React.Component {
@@ -18,8 +19,25 @@ class CustomerHome extends React.Component {
     };
   }
 
+
   componentDidMount() {
     this.getRestaurantList();
+  }
+
+  componentWillUnmount() {
+    $('#filterBar').autocomplete('destroy');
+  }
+
+  applyAutocomplete(data) {
+    let restaurantList = data.map((ele) => {
+      return ele.name;
+    });
+    $(function() {
+      var availableTags = restaurantList;
+      $('#filterBar').autocomplete({
+        source: availableTags
+      });
+    });
   }
 
   getRestaurantList() {
@@ -29,6 +47,7 @@ class CustomerHome extends React.Component {
       success: (data) => {
         console.log('successfully grabbed restaurant data', data);
         this.setState({ restaurantList: data });
+        this.applyAutocomplete(data);
       },
       error: (error) => {
         console.log('failed to grab restaurant data', error);
@@ -43,7 +62,7 @@ class CustomerHome extends React.Component {
         <div className="select-restaurant-container">
           <h4>Help me queue up at...</h4>
           <div style={{textAlign: 'center'}}>
-            <input type="text" placeholder="Filter..." style={{width: '60%', textAlign: 'center'}}></input>
+            <input id="filterBar" type="text" placeholder="Filter..." style={{width: '60%', textAlign: 'center'}}></input>
           </div>
           {this.state.restaurantList.map(restaurant => {
             return (

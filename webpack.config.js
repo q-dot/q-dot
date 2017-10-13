@@ -30,7 +30,7 @@ const config = {
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         loader: 'file-loader?name=/assets/[name].[ext]'
-      }
+      },
     ],
   },
   plugins: [
