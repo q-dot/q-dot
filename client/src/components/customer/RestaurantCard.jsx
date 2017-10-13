@@ -6,7 +6,6 @@ import SelectedRestaurant from './SelectedRestaurant.jsx';
 class RestaurantCard extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.restaurant);
     this.state = {
       restaurantStatus: this.props.restaurant.status
     };
@@ -21,11 +20,11 @@ class RestaurantCard extends React.Component {
     const closedStatusCircle = {
       background: '#C01717'
     };
-    
+
     this.state.restaurantStatus === 'Closed' ? statusCircle = closedStatusCircle : statusCircle = openStatusCircle;
-    
+
     let image = this.props.restaurant.image;
-    
+
     return (
       <div className="restaurant-container">
         <div className="col s12 m7">

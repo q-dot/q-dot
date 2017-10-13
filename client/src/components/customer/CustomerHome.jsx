@@ -72,8 +72,12 @@ class CustomerHome extends React.Component {
   updateFilteredList () {
     if (this.state.filter === '') {
       this.setState({filteredList: this.state.restaurantList});
+      return;
     }
-    console.log('Update filtered list to filter:', this.state.filter);
+    this.setState({filteredList: this.state.restaurantList.filter((ele) => {
+      //return true to signify match if a regex match !== null?
+      return (ele.name.toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1);
+    })});
   }
 
   render() {
