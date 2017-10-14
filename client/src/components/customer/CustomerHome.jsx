@@ -4,11 +4,11 @@ import CustomerNav from './CustomerNav.jsx';
 import CustomerBanner from './CustomerBanner.jsx';
 import SelectedRestaurant from './SelectedRestaurant.jsx';
 import RestaurantCard from './RestaurantCard.jsx';
+import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import $ from 'jquery';
 import './lib/jquery-ui.min.css';
 import './lib/jquery-ui.min.js';
-import { Link } from 'react-router-dom';
 
 class CustomerHome extends React.Component {
   constructor(props) {
@@ -97,7 +97,7 @@ class CustomerHome extends React.Component {
               <div key={restaurant.id}>
                 <Link to={`/restaurant/${restaurant.name}/${restaurant.id}`}><RestaurantCard restaurant={restaurant}/></Link>
               </div>
-            )
+            );
           }
           )}
           <button className='btn btn-lg btn-primary btn-block' style={{margin: 'auto', marginTop: '50px'}} onClick={() => {

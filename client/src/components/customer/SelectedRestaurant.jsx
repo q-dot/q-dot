@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 class SelectedRestaurant extends React.Component {
   constructor(props) {
-    console.log('selected restaurant: x', props)
     super(props);
     this.customerInfoSubmitted = this.customerInfoSubmitted.bind(this);
     this.state = {
@@ -31,7 +30,6 @@ class SelectedRestaurant extends React.Component {
       method: 'GET',
       url: `/restaurants?restaurantId=${id}`,
       success: (data) => {
-        console.log('successfully grabbed current restaurant data', data);
         this.setState({ currentRestaurant: data });
         if (data.status !== 'Open') {
           window.alert('This restaurant\'s queue is closed!');
@@ -54,8 +52,6 @@ class SelectedRestaurant extends React.Component {
 
   render() {
     const restaurantImg = {
-      // uncomment this for dummy data pics to load instead
-      // backgroundImage: `url(../${this.state.currentRestaurant.image})`
       backgroundImage: `url(${this.state.currentRestaurant.image})`
     };
 
@@ -63,7 +59,7 @@ class SelectedRestaurant extends React.Component {
       <div className="selected-restaurant">
         <RestaurantLogoBanner style={restaurantImg} />
         <RestaurantInformation restaurant={this.state.currentRestaurant}/>
-        <CustomerInfoForm restStatus={this.state.currentRestaurant.status} customerInfoSubmitted={this.customerInfoSubmitted} />
+        <CustomerInfoForm restStatus={this.state.currentRestaurant.status} customerInfoSubmitted={this.customerInfoSubmitted}/>
       </div>
     );
   }

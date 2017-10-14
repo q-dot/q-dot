@@ -33,18 +33,16 @@ const findInfoForAllRestaurants = () => {
 };
 
 const findRestaurauntByManager = (managerId) => {
-  return db.Restaurant.findOne({where: {
-      managerId: managerId // CHANGE THIS TO MANAGERID AFTER TESTING
-    }
-  });
-}
+  return db.Restaurant.findOne({ where: {
+    managerId: managerId // CHANGE THIS TO MANAGERID AFTER TESTING
+  }});
+};
 
 //update restaurant open/close status
 const updateRestaurantStatus = (info) => {
   return db.Restaurant.update({status: info.status}, {where: {id: info.restaurantId}});
 };
 
-// successfully adding
 // find/add customer to database
 const findOrAddCustomer = (params) => {
   return db.Customer.findOne({where: {mobile: params.mobile}})
@@ -101,14 +99,14 @@ const addToQueue = (params) => {
       if (row !== null) {
         throw new Error('Already added');
       } else {
-        console.log('looking up rest ID')
+        console.log('looking up rest ID');
         return findInfoForOneRestaurant(params.restaurantId);
       }
     })
     .then(restaurant => {
 
 
-      console.log('Rest obj', restaurant)
+      console.log('Rest obj', restaurant);
       if (restaurant.status === 'Open') { // NOT GETTING STATUS
         queueInfo.position = restaurant.nextPosition + 1;
         queueInfo.wait = restaurant.total_wait;

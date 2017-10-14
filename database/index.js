@@ -125,10 +125,6 @@ ManagerAudit.belongsTo(Manager);
 // add manager id to restaurant
 Restaurant.belongsTo(Manager);
 
-// Restaurant.hasOne(Manager, {foreignKey: 'managerId'});
-// Manager.hasOne(Restaurant, {foreignKey: 'managerId'});
-
-
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
