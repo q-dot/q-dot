@@ -306,7 +306,6 @@ app.post('/restaurants', (req, res) => {
       restaurantInfo.managerId = managerId;
       dbQuery.addRestaurant(restaurantInfo);
     })
-  dbQuery.addRestaurant(testData.restaurant)
     .then((results) => {
       res.sendStatus(201);
     })
@@ -391,6 +390,8 @@ io.on('connection', (socket) => {
       console.log(phoneToUse, 'should get an SMS. It has length', phoneToUse.length);
       if (phoneToUse.length === 11) {
         helpers.sendSMS(nexmo, configs.virtualNumber, phoneToUse, placeName);
+      } else if (phoneToUse.length === 10) {
+        helpers.sendSMS(nexmo, '1' + configs.virtualNumber, phoneToUse, placeName);
       }
 
       transporter.sendMail(mailOptions, function(error, info){
