@@ -122,6 +122,11 @@ body {
 .sub-nav-a {
   color: white;
   text-decoration: none;
+  display: inline-block;     
+  position: relative;    
+  z-index: 1;     
+  padding: 2em;     
+  margin: -2em;
 }
 
 .sub-nav-a:hover {

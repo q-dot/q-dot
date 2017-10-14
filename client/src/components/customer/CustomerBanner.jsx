@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 // nav bar
 const CustomerBanner = (props) => {
 
@@ -16,15 +17,17 @@ const CustomerBanner = (props) => {
   let dateNow = (currDate + ' ' + months[currMonth]);
 
   return (
-    <div className="gradient-banner-container">
-      <div className="banner-content">
-        <p className="banner-title">{welcomeMessage}</p>
-        {queueMessage}
+    <div>
+      <div className="gradient-banner-container">
+        <div className="banner-content">
+          <p className="banner-title">{welcomeMessage}</p>
+          {queueMessage}
+        </div>
+        <div className="date-container">
+          <p className="date-info">Today is {dateNow}</p>
+        </div>
       </div>
-      <div className="date-container">
-        <p className="date-info">Today is {dateNow}</p>
-      </div>
-    </div>
+    </div>  
   );
 };
 

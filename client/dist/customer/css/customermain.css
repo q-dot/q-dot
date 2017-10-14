@@ -10019,6 +10019,7 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
 .sub-nav-bar {
   width: 100%;
   margin: 15px;
+  background-color: #f4f7f9;
 }
 
 .sub-nav-content {
@@ -10030,6 +10031,11 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
 .sub-nav-a {
   color: white;
   text-decoration: none;
+  display: inline-block;     
+  position: relative;    
+  z-index: 1;     
+  padding: 2em;     
+  margin: -2em;
 }
 
 .sub-nav-a:hover {
