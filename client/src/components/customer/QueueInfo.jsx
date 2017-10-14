@@ -24,11 +24,8 @@ class QueueInfo extends React.Component {
       ready: false,
       timer: ''
     };
-    // socket initialize
     this.socket = io();
-    // dynamically update if table is ready
     this.socket.on('noti', (message) => {
-      // $.get('/endsession');
       window.alert(message);
       this.playReadySound();
       this.startTimer();
@@ -59,7 +56,6 @@ class QueueInfo extends React.Component {
           userAddress: data.address,
           restaurantAddress: data.restaurant.address
         });
-        // report queueId to server socket
         this.socket.emit('customer report', id);
 
       },
@@ -81,7 +77,6 @@ class QueueInfo extends React.Component {
 
   componentDidMount() {
     this.getCurrentCustomerId();
-    //
   }
 
   startTimer() {
@@ -114,7 +109,12 @@ class QueueInfo extends React.Component {
             <h5>YOUR QUEUE NUMBER IS</h5>
             {
               this.state.ready
-                ? <div><a href="/customer"><h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3></a><h3>{this.state.timer}</h3></div>
+                ? <div>
+                  <a href="/customer">
+                    <h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3>
+                  </a>
+                  <h3>{this.state.timer}</h3>
+                </div>
                 : <div className="queue-position-display">
                   <span className="position-number">{this.state.currentCustomer.position}</span>
                   <h6>your approximate wait time is:</h6>

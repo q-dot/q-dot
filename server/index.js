@@ -257,7 +257,7 @@ app.get('/logout', (req, res) => {
     })
     .catch((err) => {
       console.log('error adding audit hist', err);
-    })
+    });
 });
 
 //this must have originally been for an existing manager adding another manager
@@ -265,16 +265,13 @@ app.get('/logout', (req, res) => {
 //add a new manager login for a restaurant
 app.post('/manager', (req, res) => {
   // if (req.user) {
-    if (!req.body.password || !req.body.username) {
-      res.sendStatus(400);
-    } else {
-      var passwordInfo = dbManagerQuery.genPassword(req.body.password, dbManagerQuery.genSalt());
-      dbManagerQuery.addManager(req.body.username, passwordInfo.passwordHash, passwordInfo.salt)
-        .then(results => res.send(results));
-    }
-//  } else {
-    // res.sendStatus(401);
-  // }
+  if (!req.body.password || !req.body.username) {
+    res.sendStatus(400);
+  } else {
+    var passwordInfo = dbManagerQuery.genPassword(req.body.password, dbManagerQuery.genSalt());
+    dbManagerQuery.addManager(req.body.username, passwordInfo.passwordHash, passwordInfo.salt)
+      .then(results => res.send(results));
+  }
 });
 
 //returns manager login/logout history
@@ -319,24 +316,24 @@ app.post('/restaurants', (req, res) => {
 app.post('/yelp', (req, res) => {
 
   yelp.accessToken(configs.YELP_CLIENT_ID, configs.YELP_SECRET)
-  .then(response => {
-    token = response.jsonBody.access_token;
-    client = yelp.client(token);
+    .then(response => {
+      token = response.jsonBody.access_token;
+      client = yelp.client(token);
 
-    client.search({
-      term: req.body.query,
-      location: req.body.location
-    })
-    .then(result => {
-      res.send(result.jsonBody.businesses);
+      client.search({
+        term: req.body.query,
+        location: req.body.location
+      })
+        .then(result => {
+          res.send(result.jsonBody.businesses);
+        })
+        .catch(e => {
+          console.log(e);
+        });
     })
     .catch(e => {
       console.log(e);
     });
-  })
-  .catch(e => {
-    console.log(e);
-  });
 });
 
 app.get('/map', (req, res) => {
@@ -352,11 +349,6 @@ app.get('/map', (req, res) => {
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
-
-// socket io cant use express listen
-// app.listen(port, () => {
-//   console.log(`(>^.^)> Server now listening on ${port}!`);
-// });
 
 let queueMap = {};// queueId: socketId
 let managerMap = {};// restaurantId: socketId
@@ -394,7 +386,7 @@ io.on('connection', (socket) => {
         helpers.sendSMS(nexmo, '1' + configs.virtualNumber, phoneToUse, placeName);
       }
 
-      transporter.sendMail(mailOptions, function(error, info){
+      transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
           console.log(error);
         } else {

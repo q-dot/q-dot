@@ -50,17 +50,13 @@ class CreateRestaurant extends React.Component {
         query: this.state.searchQuery,
         location: this.state.location
       }
-    }
+    };
 
     $.ajax(options)
       .then((data) => {
         this.setState({results: data});
-        // const elem = ReactDOM.findDOMNode(this.refs.searchList);
-        // if (elem) {
-        //   elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-        // }
       })
-      .fail((data) => {console.log(data)});
+      .fail((data) => { console.log(data); });
   }
 
   selectRestaurant(index) {
@@ -96,13 +92,13 @@ class CreateRestaurant extends React.Component {
           password: this.state.password
         }
       }
-    }
+    };
 
     $.ajax(options)
       .then((data) => {
         window.location.href = '/managerlogin';
       })
-      .fail((data) => {console.log(data)});
+      .fail((data) => { console.log(data); });
   }
 
   render() {
@@ -120,28 +116,29 @@ class CreateRestaurant extends React.Component {
             <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
             <div className='buffer'></div>
             <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
-            <br /><div className='horLine' /><br />
+            <br/>
+            <div className='horLine' />
+            <br/>
             {this.state.selectedRestaurant.name !== ''
-            ? <div>
-              <h4>Selected:</h4>
-              <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+              ? <div>
+                <h4>Selected:</h4>
+                <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+                </div>
+                {this.state.selectedRestaurant.name}<br />
+                <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
               </div>
-              {this.state.selectedRestaurant.name}<br />
-              <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
-            </div>
-            : null}
+              : null}
           </div>
           <div className='innerPane'>
 
             <div ref='searchList'></div>
-              {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+            {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
               : null}
             <div ref='readyButton' className='buffer' />
 
             {this.state.selectedRestaurant.name !== ''
               ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
               : null}
-
           </div>
         </div>
       </div>  

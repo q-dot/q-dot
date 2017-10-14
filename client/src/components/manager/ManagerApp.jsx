@@ -21,12 +21,8 @@ class ManagerApp extends React.Component {
       restaurantId: window.location.href.slice(window.location.href.lastIndexOf('=') + 1)
     };
 
-    // console.log('passed rest id: ', this.state.restaurantId);
-
-    // socket initialize
     this.socket = io();
 
-    // dynamically update queue
     this.socket.on('update', () => {
       this.reloadData();
     });
@@ -51,14 +47,11 @@ class ManagerApp extends React.Component {
   }
 
   notiCustomer(queueId, customer) {
-    console.log(`noti sent to queueId: ${queueId}`);
-    // console.log(this.state.restaurantInfo);
     this.setState({queueId: queueId});
     this.socket.emit('noti customer', queueId, this.state.restaurantInfo.name, customer);
   }
 
   addToQueue(customer) {
-    console.log('here to add', customer);
     customer.restaurantId = 1;
     $.ajax({
       method: 'POST',
@@ -76,7 +69,6 @@ class ManagerApp extends React.Component {
   }
 
   removeCustomer(queueId) {
-    console.log(queueId);
     $.ajax({
       url: '/queues?queueId=' + queueId,
       method: 'PUT',
@@ -100,10 +92,8 @@ class ManagerApp extends React.Component {
             restaurantInfo: data,
             queues: data.queues
           });
-        // report restaurantId to server socket
         this.socket.emit('manager report', this.state.restaurantInfo.id);
         let imageURL = `url(${data.image})`;
-        // let imageURL = `url(/${data.image})`;
         $('.jumbotron-billboard').css('background', imageURL);
       },
       error: (err) => {

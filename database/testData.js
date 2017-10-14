@@ -2,4 +2,4 @@ const restaurant = {name: 'Chicken on Fire', phone: '(415) 555-4555', image: '..
 
 module.exports = {
   restaurant: restaurant
-}
+};

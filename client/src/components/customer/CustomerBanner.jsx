@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-// nav bar
 const CustomerBanner = (props) => {
 
   let welcomeMessage;
@@ -14,7 +12,7 @@ const CustomerBanner = (props) => {
 
   let currDate = d.getDate();
   let currMonth = d.getMonth();
-  let dateNow = (currDate + ' ' + months[currMonth]);
+  let dateNow = (`${currDate} ${months[currMonth]}`);
 
   return (
     <div>

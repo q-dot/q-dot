@@ -1,8 +1,8 @@
 import React from 'react';
 import CustomerListEntry from './CustomerListEntry.jsx';
+import AddToQueue from './AddToQueue.jsx';
 import _ from 'lodash';
 import $ from 'jquery';
-import AddToQueue from './AddToQueue.jsx';
 
 class CustomerList extends React.Component {
 
@@ -35,8 +35,6 @@ class CustomerList extends React.Component {
 
   showModal(queue) {
     this.setState({ modalQueue: queue });
-    // everytime the state changed, modal needs to initialize.
-    // so put the modal toggle in the next runloop of modal initialize
     setTimeout(() => $('#remove-warning').modal('toggle'), 0);
   }
 
@@ -85,7 +83,9 @@ class CustomerList extends React.Component {
                   <h2 className="modal-title">Statement</h2>
                 </div>
                 <div className="modal-body">
-                  <p className="warning-content"><b>Remove {this.state.modalQueue.customer.name}</b> From Queue?</p>
+                  <p className="warning-content">
+                    <b>Remove {this.state.modalQueue.customer.name}</b> 
+                  From Queue?</p>
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-warning" data-dismiss="modal" onClick={removeCustomer}>No Show</button>

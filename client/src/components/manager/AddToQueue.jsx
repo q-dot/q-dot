@@ -60,10 +60,18 @@ class AddToQueue extends React.Component {
                 <h2 className="modal-title">Customer Info</h2>
               </div>
               <div className="modal-body">
-                <label>Name: <input type="text" placeholder="name.." value={this.state.name} onChange={this.getName.bind(this)}/></label>
-                <label>Mobile: <input type="text" placeholder="mobile number.."value={this.state.mobile} onChange={this.getMobile.bind(this)}/></label>
-                <label>Email: <input type="text" placeholder="email.." value={this.state.email} onChange={this.getEmail.bind(this)}/></label>
-                <label>Size: <input type="text" placeholder="size of group.." value={this.state.size} onChange={this.getSize.bind(this)}/></label>
+                <label>Name: 
+                  <input type="text" placeholder="name.." value={this.state.name} onChange={this.getName.bind(this)}/>
+                </label>
+                <label>Mobile: 
+                  <input type="text" placeholder="mobile number.."value={this.state.mobile} onChange={this.getMobile.bind(this)}/>
+                </label>
+                <label>Email: 
+                  <input type="text" placeholder="email.." value={this.state.email} onChange={this.getEmail.bind(this)}/>
+                </label>
+                <label>Size: 
+                  <input type="text" placeholder="size of group.." value={this.state.size} onChange={this.getSize.bind(this)}/>
+                </label>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-primary" data-dismiss="modal" onClick={this.addToQueue.bind(this)}>Add</button>

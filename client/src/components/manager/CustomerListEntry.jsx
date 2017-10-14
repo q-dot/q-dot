@@ -60,7 +60,6 @@ class CustomerListEntry extends React.Component {
   
   startTimer() {
     this.setState({runningTimer: true});
-    //clearInterval(this.timer);
     let i = 180000;
     this.setState({timer: this.printTime(i)});
     let interval = 1000;

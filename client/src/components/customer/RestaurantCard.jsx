@@ -13,13 +13,9 @@ class RestaurantCard extends React.Component {
 
   render() {
     let statusCircle;
-    const openStatusCircle = {
-      background: '#4FD135'
-    };
+    const openStatusCircle = { background: '#4FD135' };
 
-    const closedStatusCircle = {
-      background: '#C01717'
-    };
+    const closedStatusCircle = { background: '#C01717' };
 
     this.state.restaurantStatus === 'Closed' ? statusCircle = closedStatusCircle : statusCircle = openStatusCircle;
 
@@ -34,7 +30,9 @@ class RestaurantCard extends React.Component {
             </div>
             <div className="card-title">
               <p className="card-title-text">{this.props.restaurant.name}</p>
-              <p className="status"><span className="status-circle" style={statusCircle}/>{this.state.restaurantStatus}</p>
+              <p className="status">
+                <span className="status-circle" style={statusCircle}/>
+                {this.state.restaurantStatus}</p>
             </div>
             <div className="card-content">
               <span className="queue-number">groups in queue: {this.props.restaurant.queues.length} </span>
@@ -48,4 +46,3 @@ class RestaurantCard extends React.Component {
 }
 
 export default RestaurantCard;
-          // <Link to={`/restaurant/${this.props.restaurant.name}`}>

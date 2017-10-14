@@ -6,13 +6,7 @@ import GroupSizeSelector from './GroupSizeSelector.jsx';
 class CustomerInfoForm extends React.Component {
   constructor(props) {
     super(props);
-    this.getGroupSize = this.getGroupSize.bind(this);
-    this.getFirstName = this.getFirstName.bind(this);
-    this.getLastName = this.getLastName.bind(this);
-    this.getMobile = this.getMobile.bind(this);
-    this.getEmail = this.getEmail.bind(this);
-    this.getAddress = this.getAddress.bind(this);
-    this.submitCustomerInfo = this.submitCustomerInfo.bind(this);
+    
     this.state = {
       groupSize: 0,
       customerFirstName: '',
@@ -22,6 +16,14 @@ class CustomerInfoForm extends React.Component {
       customerEmail: '',
       currentRestaurantId: this.props.currentRestaurantId
     };
+
+    this.getGroupSize = this.getGroupSize.bind(this);
+    this.getFirstName = this.getFirstName.bind(this);
+    this.getLastName = this.getLastName.bind(this);
+    this.getMobile = this.getMobile.bind(this);
+    this.getEmail = this.getEmail.bind(this);
+    this.getAddress = this.getAddress.bind(this);
+    this.submitCustomerInfo = this.submitCustomerInfo.bind(this);
   }
 
   getGroupSize(size) {
@@ -71,7 +73,6 @@ class CustomerInfoForm extends React.Component {
 
     let fullName = `${this.state.customerFirstName} ${this.state.customerLastName}`;
     let windowUrl = window.location.href;
-    // let id = windowUrl.slice(-1); // AHHHHHHHHHHHHHHHH
     let id = windowUrl.slice(windowUrl.lastIndexOf('/') + 1);
 
     $.ajax({
