@@ -378,12 +378,13 @@ io.on('connection', (socket) => {
       };
 
       //Don't even try to text if it's not valid format with country code. only works for USA
+      console.log('unfiltered mobile:', customer.mobile);
       let phoneToUse = helpers.filterPhoneForNexmo(customer.mobile);
       console.log(phoneToUse, 'should get an SMS. It has length', phoneToUse.length);
       if (phoneToUse.length === 11) {
         helpers.sendSMS(nexmo, configs.virtualNumber, phoneToUse, placeName);
       } else if (phoneToUse.length === 10) {
-        helpers.sendSMS(nexmo, '1' + configs.virtualNumber, phoneToUse, placeName);
+        helpers.sendSMS(nexmo, configs.virtualNumber, '1' + phoneToUse, placeName);
       }
 
       transporter.sendMail(mailOptions, function(error, info) {
