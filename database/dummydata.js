@@ -24,14 +24,10 @@ const dropDB = () => {
     .then(() => db.Customer.sync({force: true}))
     .then(() => db.Queue.sync({force: true}))
     .then(() => db.ManagerAudit.sync({force: true}))
-    .then(() => addManager())
-    .then(() => addRestaurants())
-    .then(() => addToQueue());
+    .then(() => addManager());
 };
 
 module.exports = {
-  addRestaurants: addRestaurants,
-  addToQueue: addToQueue,
   addManager: addManager,
   dropDB: dropDB
 };
