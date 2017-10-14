@@ -100,7 +100,7 @@ class CustomerHome extends React.Component {
             )
           }
           )}
-          <button className='btn btn-lg btn-primary btn-block' style={{margin: 'auto'}} onClick={() => {
+          <button className='btn btn-lg btn-primary btn-block' style={{margin: 'auto', marginTop: '50px'}} onClick={() => {
             const elem = ReactDOM.findDOMNode(this.refs.top);
             if (elem) {
               elem.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });

@@ -24,6 +24,7 @@
 #grand-title {
   font-size: 90px;
   color: white;
+  text-shadow: 2px 2px 5px black;
 }
 
 h2 {
@@ -63,8 +64,8 @@ h2 {
   float: right;
 }
 
-.hidden { 
-  display:none; 
+.hidden {
+  display:none;
 }
 
 .led-yellow {

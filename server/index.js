@@ -89,12 +89,12 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/redirect', (req, res) => {
-  console.log('Redirect requested!', req.session);
+app.get('/endsession', (req, res) => {
+  console.log('End session requested!', req.session);
   req.session.destroy((err) => {
     console.log('destroy session');
     res.cookie('qsessionid', '', { expires: new Date() });
-    res.send('/customer');
+    res.send();
   });
 });
 
@@ -132,7 +132,7 @@ app.post('/dummydata', (req, res) => {
 //add a customer to the queue at a restaurant
 // this throws error 418
 app.post('/queues', (req, res) => {
-  
+
   console.log('POST to queues: ', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
@@ -345,7 +345,7 @@ app.get('/map', (req, res) => {
   request(`https://maps.googleapis.com/maps/api/directions/json?origin=${req.query.user}&destination=${req.query.restaurant}`, function (error, response, body) {
     if (error) { console.error(error); }
     console.log('this is data from server: ', body);
-    res.json(body);  
+    res.json(body);
   });
 });
 

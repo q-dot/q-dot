@@ -11,7 +11,7 @@ class SelectedRestaurant extends React.Component {
     super(props);
     this.customerInfoSubmitted = this.customerInfoSubmitted.bind(this);
     this.state = {
-      currentRestaurant: {queues: []},
+      currentRestaurant: {queues: [], status: 'Open'},
       infoSubmitted: false,
       queueId: 0,
       queuePosition: 0,
@@ -33,6 +33,10 @@ class SelectedRestaurant extends React.Component {
       success: (data) => {
         console.log('successfully grabbed current restaurant data', data);
         this.setState({ currentRestaurant: data });
+        if (data.status !== 'Open') {
+          window.alert('This restaurant\'s queue is closed!');
+          window.location.replace('/customer');
+        }
       },
       error: (error) => {
         console.log('failed to grab current restaurant data', error);
@@ -59,7 +63,7 @@ class SelectedRestaurant extends React.Component {
       <div className="selected-restaurant">
         <RestaurantLogoBanner style={restaurantImg} />
         <RestaurantInformation restaurant={this.state.currentRestaurant}/>
-        <CustomerInfoForm customerInfoSubmitted={this.customerInfoSubmitted} />
+        <CustomerInfoForm restStatus={this.state.currentRestaurant.status} customerInfoSubmitted={this.customerInfoSubmitted} />
       </div>
     );
   }
