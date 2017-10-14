@@ -130,7 +130,6 @@ app.post('/dummydata', (req, res) => {
 });
 
 //add a customer to the queue at a restaurant
-// this throws error 418
 app.post('/queues', (req, res) => {
 
   console.log('POST to queues: ', req.body);
