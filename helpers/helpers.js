@@ -16,12 +16,13 @@ const phoneNumberFormatter = (number) => {
 
 const filterPhoneForNexmo = (number) => {
   let numberPattern = /\d+/g;
-  let result = number.match(numberPattern)[0];
+  let result = number.match(numberPattern).join('');
   return result;
 };
 
 const sendSMS = (nexmoObj, virtualNumber, phoneToUse, placeName) => {
   let message = placeName + ' is ready for you! 🍽 - Q.\n';
+  console.log('SendSMS called with number', phoneToUse);
 
   nexmoObj.message.sendSms(
     virtualNumber, phoneToUse, message, {type: 'unicode'}, (err, responseData) => {
