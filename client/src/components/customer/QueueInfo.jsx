@@ -106,16 +106,19 @@ class QueueInfo extends React.Component {
         <div className="divider"/>
         <div className="row">
           <div className="col s6">
-            <h5>YOUR QUEUE NUMBER IS</h5>
             {
               this.state.ready
-                ? <div>
+                ? <div className="spacing-container">
+                  <h5>YOUR TABLE IS READY!</h5>
+                  <br/>
+                  <br/>
                   <a href="/customer">
-                    <h3 className="ready-noti" onClick={this.clickedBack}>Your table is ready!</h3>
+                    <button className="gotIt-btn" onClick={this.clickedBack}>Got it, on my way!</button>
                   </a>
                   <h3>{this.state.timer}</h3>
                 </div>
                 : <div className="queue-position-display">
+                  <h5>YOUR QUEUE NUMBER IS</h5>
                   <span className="position-number">{this.state.currentCustomer.position}</span>
                   <h6>your approximate wait time is:</h6>
                   <span className="wait-time-indicator">{this.state.currentCustomer.wait}</span>

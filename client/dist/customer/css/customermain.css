@@ -9973,8 +9973,9 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
   width: 70%;
   padding-top: 5px;
   padding-bottom: 5px;
-  border: 5px solid #053C5E;
-  background-color: #12788E;
+  border-radius: 4px;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.19);
+  background-color: #2ba8a3;
   color: white;
   margin: auto;
 }
@@ -10063,6 +10064,34 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
 
 .sub-nav-button:hover { 
   background-color: #0dc4b8
+} 
+
+.spacing-container {
+  padding-top: 120px;
+  padding-bottom: 180;
+  padding-left:80px;
+  padding-right:80px;  
+}
+
+.gotIt-btn {
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  background-color: #2ba8a3;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.19);
+  border: none;
+  color: white;
+  font-family: sans-serif;
+  font-size: 30px;
+}
+
+.gotIt-btn:hover {
+  color: white;
+  text-decoration: none;
+  background-color: #0dc4b8;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.19);
+}
+
 
 
 
