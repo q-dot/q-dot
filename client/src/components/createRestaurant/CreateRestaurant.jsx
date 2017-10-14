@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import ResultList from './ResultList.jsx';
+import SubNav from '../customer/subNavBar.jsx';
 
 class CreateRestaurant extends React.Component {
   constructor() {
@@ -106,41 +107,44 @@ class CreateRestaurant extends React.Component {
 
   render() {
     return (
-      <div className='createPaneContainer'>
-        <div className='innerPane fixedPane'>
-          <h2 className='form-signin-heading'>New Manager:</h2>
-          <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
-          <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
+      <div>
+        <SubNav/>
+        <div className='createPaneContainer'>
+          <div className='innerPane fixedPane'>
+            <h2 className='form-signin-heading'>New Manager:</h2>
+            <div>Username: <input className='form-control' type="text" value={this.state.username} onChange={this.handleUsernameChange}/></div>
+            <div>Password: <input className='form-control' type="password" value={this.state.password} onChange={this.handlePasswordChange}/></div>
 
-          <h4>Search for your restaurant</h4>
-          <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
-          <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
-          <div className='buffer'></div>
-          <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
-          <br /><div className='horLine' /><br />
-          {this.state.selectedRestaurant.name !== ''
-          ? <div>
-            <h4>Selected:</h4>
-            <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+            <h4>Search for your restaurant</h4>
+            <div>Restaurant Name: <input className='form-control' type="text" value={this.state.searchQuery} onChange={this.handleQueryChange}/></div>
+            <div>Restaurant Location: <input className='form-control' type="text" value={this.state.location} onChange={this.handleLocChange}/></div>
+            <div className='buffer'></div>
+            <button className='btn btn-lg btn-primary btn-block' onClick={this.submitSearch}>Submit</button>
+            <br /><div className='horLine' /><br />
+            {this.state.selectedRestaurant.name !== ''
+            ? <div>
+              <h4>Selected:</h4>
+              <div className='restaurant-thumbnail' style={{backgroundImage: `url(${this.state.selectedRestaurant.image_url})`}}>
+              </div>
+              {this.state.selectedRestaurant.name}<br />
+              <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
             </div>
-            {this.state.selectedRestaurant.name}<br />
-            <span className='address'>{this.state.selectedRestaurant.location.address1}, {this.state.selectedRestaurant.location.city}</span>
+            : null}
           </div>
-          : null}
+          <div className='innerPane'>
+
+            <div ref='searchList'></div>
+              {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
+              : null}
+            <div ref='readyButton' className='buffer' />
+
+            {this.state.selectedRestaurant.name !== ''
+              ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
+              : null}
+
+          </div>
         </div>
-        <div className='innerPane'>
-
-          <div ref='searchList'></div>
-            {this.state.results.length > 0 ? <div><ResultList results={this.state.results} select={this.selectRestaurant}/></div>
-            : null}
-          <div ref='readyButton' className='buffer' />
-
-          {this.state.selectedRestaurant.name !== ''
-            ? <button className='btn btn-lg btn-primary btn-block' onClick={this.createRestaurant}>Create Restaurant</button>
-            : null}
-
-        </div>
-      </div>
+      </div>  
     );
   }
 }

@@ -37,3 +37,47 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.sub-nav-bar {
+  width: 100%;
+  margin: 15px;
+}
+
+.sub-nav-content {
+  list-style-type: none;
+  margin: 15px;
+  overflow: hidden;
+}
+
+.sub-nav-a {
+  color: white;
+  text-decoration: none;
+}
+
+.sub-nav-a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.sub-nav-button { 
+  float: right;
+  margin-right: 20px;
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px; 
+  padding-right: 20px;
+  border-radius: 4px;
+  background-color: #2ba8a3;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.19);
+  border: none;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.sub-nav-button:hover { 
+  background-color: #0dc4b8
+}
+

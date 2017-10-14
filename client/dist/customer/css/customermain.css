@@ -9468,20 +9468,6 @@ THESE ARE CHANGES SPECIFIC TO CUSTOMERMAIN
 
 */
 
-nav {
-  background-color: #fff;
-}
-
-nav li a {
-  color: #414141;
-  font-size: 25px;
-  font-weight: bold;
-  padding-left: 25px;
-}
-
-.customer-nav-bar {
-  width: 100%;
-}
 
 @media only screen and (min-width: 501px) {
   .customer-group-selector-container, .select-restaurant-container {
@@ -10001,6 +9987,82 @@ nav li a {
   margin: auto;
   text-align: left;
 }
+
+.customer-nav-bar {
+  width: 100%;
+  background-color: #f4f7f9;
+}
+
+.nav-content {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: ;
+}
+
+.nav-li-right {
+  margin: 15px;
+  float: right;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.nav-li {
+  margin: 15px;
+  float: left;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+
+.sub-nav-bar {
+  width: 100%;
+  margin: 15px;
+  background-color: #f4f7f9;
+}
+
+.sub-nav-content {
+  list-style-type: none;
+  margin: 15px;
+  overflow: hidden;
+}
+
+.sub-nav-a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;     
+  position: relative;    
+  z-index: 1;     
+  padding: 2em;     
+  margin: -2em;
+}
+
+.sub-nav-a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.sub-nav-button { 
+  float: right;
+  margin-right: 20px;
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px; 
+  padding-right: 20px;
+  border-radius: 4px;
+  background-color: #2ba8a3;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.19);
+  border: none;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.sub-nav-button:hover { 
+  background-color: #0dc4b8
 
 
 
