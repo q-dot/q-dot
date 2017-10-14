@@ -104,10 +104,8 @@ const addToQueue = (params) => {
       }
     })
     .then(restaurant => {
-
-
       console.log('Rest obj', restaurant);
-      if (restaurant.status === 'Open') { // NOT GETTING STATUS
+      if (restaurant.status === 'Open') {
         queueInfo.position = restaurant.nextPosition + 1;
         queueInfo.wait = restaurant.total_wait;
         queueInfo.restaurantId = restaurant.id;
@@ -131,7 +129,8 @@ const addToQueue = (params) => {
       response.queueList = result.rows;
       response.queueCount = result.count;
       return response;
-    });
+    })
+    .catch((error) => console.log(error));
 };
 
 // get queue info for one customer
