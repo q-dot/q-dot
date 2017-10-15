@@ -7,8 +7,11 @@ const { document } = (new JSDOM('')).window;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
+
+
 global.document = document;
 global.window = document.defaultView;
+global.$ = require('jquery');
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
     exposedProperties.push(property);

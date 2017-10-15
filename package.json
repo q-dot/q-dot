@@ -10,7 +10,8 @@
   "scripts": {
     "start": "nodemon --inspect server/index.js",
     "client": "webpack --watch --progress",
-    "postinstall": "webpack"
+    "postinstall": "webpack",
+    "test": "mocha test/helpers/browser.js test/*.spec.js"
   },
   "dependencies": {
     "@google/maps": "^0.4.5",
@@ -64,6 +65,7 @@
     "nodemon": "^1.12.1",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "^16.0.0",
+    "sinon": "^4.0.1",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9"
   }
