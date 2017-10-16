@@ -39,7 +39,12 @@ const config = {
       jQuery: 'jquery',
       bootstrap: 'bootstrap'
     })
-  ]
+  ],
+  externals: {
+    'cheerio': 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true,
+  },
 };
 
 module.exports = config;
