@@ -11,9 +11,9 @@ const CustomerBanner = (props) => {
   let months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
   let d = new Date();
 
-  let curr_date = d.getDate();
-  let curr_month = d.getMonth();
-  let date_now = (curr_date + ' ' + months[curr_month]);
+  let currDate = d.getDate();
+  let currMonth = d.getMonth();
+  let dateNow = (currDate + ' ' + months[currMonth]);
 
   return (
     <div className="gradient-banner-container">
@@ -21,11 +21,11 @@ const CustomerBanner = (props) => {
         <p className="banner-title">{welcomeMessage}</p>
         {queueMessage}
       </div>
-     <div className="date-container">
-       <p className="date-info">Today is {date_now}</p>
+      <div className="date-container">
+        <p className="date-info">Today is {dateNow}</p>
       </div>
     </div>
-  )
+  );
 };
 
 export default CustomerBanner;

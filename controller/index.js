@@ -32,11 +32,19 @@ const findInfoForAllRestaurants = () => {
     });
 };
 
+const findRestaurauntByManager = (managerId) => {
+  return db.Restaurant.findOne({where: {
+      managerId: managerId // CHANGE THIS TO MANAGERID AFTER TESTING
+    }
+  });
+}
+
 //update restaurant open/close status
 const updateRestaurantStatus = (info) => {
   return db.Restaurant.update({status: info.status}, {where: {id: info.restaurantId}});
 };
 
+// successfully adding
 // find/add customer to database
 const findOrAddCustomer = (params) => {
   return db.Customer.findOne({where: {mobile: params.mobile}})
@@ -44,7 +52,8 @@ const findOrAddCustomer = (params) => {
       if (customer === null) {
         const customer = {
           name: helpers.nameFormatter(params.name),
-          mobile: helpers.phoneNumberFormatter(params.mobile)
+          mobile: helpers.phoneNumberFormatter(params.mobile),
+          address: params.address
         };
 
         if (params.email) {
@@ -74,26 +83,33 @@ const getQueueInfo = (restaurantId, customerId, customerPosition) => {
 
 //add a customer to a queue at a restaurant
 const addToQueue = (params) => {
+  console.log('adding to queue, params ', params);
   const queueInfo = {
     size: params.size,
   };
   const response = {};
 
-  return findOrAddCustomer(params)
+  return findOrAddCustomer(params) // cust added ok
     .then(customer => {
       queueInfo.customerId = customer.id;
       queueInfo.name = customer.name;
+      console.log('cust info after adding: ', queueInfo);
       return db.Queue.findOne({where: {customerId: customer.id, restaurantId: params.restaurantId}});
     })
     .then(row => {
+      console.log('result from findOne', row);
       if (row !== null) {
         throw new Error('Already added');
       } else {
+        console.log('looking up rest ID')
         return findInfoForOneRestaurant(params.restaurantId);
       }
     })
     .then(restaurant => {
-      if (restaurant.status === 'Open') {
+
+
+      console.log('Rest obj', restaurant)
+      if (restaurant.status === 'Open') { // NOT GETTING STATUS
         queueInfo.position = restaurant.nextPosition + 1;
         queueInfo.wait = restaurant.total_wait;
         queueInfo.restaurantId = restaurant.id;
@@ -157,6 +173,10 @@ const removeFromQueue = (queueId) => {
     .then(() => getQueueInfo(restaurant.id, 0, restaurant.nextPosition + 1));
 };
 
+const addRestaurant = (restaurantInfo) => {
+  return db.Restaurant.create(restaurantInfo);
+};
+
 module.exports = {
   findInfoForAllRestaurants: findInfoForAllRestaurants,
   findInfoForOneRestaurant: findInfoForOneRestaurant,
@@ -166,5 +186,7 @@ module.exports = {
   getQueueInfo: getQueueInfo,
   getCustomerInfo: getCustomerInfo,
   getManagerInfo: getManagerInfo,
-  removeFromQueue: removeFromQueue
+  removeFromQueue: removeFromQueue,
+  addRestaurant: addRestaurant,
+  findRestaurauntByManager: findRestaurauntByManager
 };

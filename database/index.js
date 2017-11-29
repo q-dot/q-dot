@@ -9,7 +9,8 @@ if (process.env.DATABASE_URL) {
     username: 'postgres',
     password: 'qdot',
     dialect: 'postgres',
-    port: 5000
+    port: 5000,
+    logging: false
   });
 }
 
@@ -40,7 +41,8 @@ const Manager = db.define('manager', {
   },
   username: Sequelize.STRING,
   passwordHash: Sequelize.STRING,
-  passwordSalt: Sequelize.STRING
+  passwordSalt: Sequelize.STRING,
+  // restaurantId: Sequelize.INTEGER
 });
 
 //Customer Schema
@@ -51,6 +53,7 @@ const Customer = db.define('customer', {
     autoIncrement: true
   },
   name: Sequelize.STRING,
+  address: Sequelize.STRING,
   mobile: {
     type: Sequelize.STRING,
     unique: true,
@@ -82,6 +85,7 @@ const Restaurant = db.define('restaurant', {
     autoIncrement: true
   },
   name: Sequelize.STRING,
+  address: Sequelize.STRING,
   phone: {
     type: Sequelize.STRING,
     unique: true,
@@ -100,7 +104,10 @@ const Restaurant = db.define('restaurant', {
     defaultValue: 0
   },
   status: Sequelize.STRING,
-  image: Sequelize.STRING
+
+  image: Sequelize.STRING,
+  tables: Sequelize.TEXT,
+  managerId: Sequelize.INTEGER
 });
 
 // Relationship between Restaurant & Queue
@@ -115,9 +122,17 @@ Queue.belongsTo(Customer);
 Manager.hasOne(ManagerAudit);
 ManagerAudit.belongsTo(Manager);
 
+// add manager id to restaurant
+Restaurant.belongsTo(Manager);
+
+// Restaurant.hasOne(Manager, {foreignKey: 'managerId'});
+// Manager.hasOne(Restaurant, {foreignKey: 'managerId'});
+
+
 Customer.sync()
   .then(() => Restaurant.sync())
   .then(() => Queue.sync())
+  // .then(() => Manager.sync())
   .catch(error => console.log('error syncing data', error));
 
 module.exports = {

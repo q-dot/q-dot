@@ -8,7 +8,8 @@ const config = {
     customerApp: path.resolve(__dirname, 'client/src/customerIndex.jsx'),
     queueinfo: path.resolve(__dirname, 'client/src/queueinfoIndex.jsx'),
     managerApp: path.resolve(__dirname, 'client/src/managerIndex.jsx'),
-    managerLogin: path.resolve(__dirname, 'client/src/managerLoginIndex.jsx')
+    managerLogin: path.resolve(__dirname, 'client/src/managerLoginIndex.jsx'),
+    createRestaurant: path.resolve(__dirname, 'client/src/createRestaurantIndex.jsx')
   },
   output: {
     path: path.resolve(__dirname, 'client/dist/js'),
@@ -29,7 +30,7 @@ const config = {
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         loader: 'file-loader?name=/assets/[name].[ext]'
-      }
+      },
     ],
   },
   plugins: [
