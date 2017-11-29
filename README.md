@@ -10,10 +10,10 @@ Customers are able to see their current position in line and total wait time, wh
 
 ## Team
 
-  - [Johnny Li](https://github.com/Pegaiur)
-  - [Tiffany Pham](https://github.com/tiffaphm)
-  - [Neha Chaudhary](https://github.com/nehacp)
-  - [Eugene Soo](https://github.com/eugenesoo)
+  - [Daniel Dai](https://github.com/ddai85)
+  - [Christie Villanueva](https://github.com/cjvil)
+  - [Justin Kwok](https://github.com/Jkwok0714)
+  - [Lara Ismael](https://github.com/laraismael1)
 
 ## Table of Contents
 
