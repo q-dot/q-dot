@@ -32,6 +32,7 @@ class GroupSizeSelector extends React.Component {
             <option value="5">5</option>
             <option value="6">6</option>
             <option value="7">7</option>
+            <option value="8">8</option>
           </select>
         </div>
       </div>
@@ -40,8 +41,3 @@ class GroupSizeSelector extends React.Component {
 }
 
 export default GroupSizeSelector;
-// <div className="customer-group-buttons">
-// <a className="waves-effect waves-light btn-large"><i className="material-icons left">person</i>solo</a>
-// <a className="waves-effect waves-light btn-large"><i className="material-icons left">people</i>2</a>
-// <a className="waves-effect waves-light btn-large"><i className="material-icons left">people</i>3 - 4</a>
-// <a className="waves-effect waves-light btn-large"><i className="material-icons left">person_add</i>5 +</a>

@@ -4,23 +4,25 @@ import StatusSwitch from './StatusSwitch.jsx';
 import AddToQueue from './AddToQueue.jsx';
 import Nav from './Nav.jsx';
 import ManagerAudit from './ManagerAudit.jsx';
+import TablesManager from './TablesManager.jsx';
 import $ from 'jquery';
 import io from 'socket.io-client';
 
 class ManagerApp extends React.Component {
 
   constructor(props) {
+    console.log(props);
     super(props);
 
     this.state = {
       queues: undefined,
-      restaurantInfo: {}
+      restaurantInfo: {},
+      queueId: null,
+      restaurantId: window.location.href.slice(window.location.href.lastIndexOf('=') + 1)
     };
 
-    // socket initialize
     this.socket = io();
 
-    // dynamically update queue
     this.socket.on('update', () => {
       this.reloadData();
     });
@@ -32,7 +34,7 @@ class ManagerApp extends React.Component {
 
   switchStatus() {
     $.ajax({
-      url: '/restaurants?restaurantId=1&status=' + (this.state.restaurantInfo.status === 'Open' ? 'Closed' : 'Open'),
+      url: `/restaurants?restaurantId=${this.state.restaurantId}&status=` + (this.state.restaurantInfo.status === 'Open' ? 'Closed' : 'Open'),
       method: 'PATCH',
       success: (data) => {
         console.log(data);
@@ -44,14 +46,14 @@ class ManagerApp extends React.Component {
     });
   }
 
-  notiCustomer(queueId) {
-    console.log(`noti sended to queueId: ${queueId}`);
-    this.socket.emit('noti customer', queueId);
+  notiCustomer(queueId, customer) {
+    this.setState({queueId: queueId});
+    this.socket.emit('noti customer', queueId, this.state.restaurantInfo.name, customer);
   }
 
   addToQueue(customer) {
     console.log('here to add', customer);
-    customer.restaurantId = 1;
+    customer.restaurantId = this.state.restaurantId;
     $.ajax({
       method: 'POST',
       url: '/queues',
@@ -68,7 +70,6 @@ class ManagerApp extends React.Component {
   }
 
   removeCustomer(queueId) {
-    console.log(queueId);
     $.ajax({
       url: '/queues?queueId=' + queueId,
       method: 'PUT',
@@ -84,7 +85,7 @@ class ManagerApp extends React.Component {
 
   reloadData() {
     $.ajax({
-      url: '/restaurants?restaurantId=1',
+      url: '/restaurants?restaurantId=' + this.state.restaurantId,
       success: (data) => {
         console.log(data);
         this.setState(
@@ -92,9 +93,8 @@ class ManagerApp extends React.Component {
             restaurantInfo: data,
             queues: data.queues
           });
-        // report restaurantId to server socket
         this.socket.emit('manager report', this.state.restaurantInfo.id);
-        let imageURL = `url(/${data.image})`;
+        let imageURL = `url(${data.image})`;
         $('.jumbotron-billboard').css('background', imageURL);
       },
       error: (err) => {
@@ -120,7 +120,8 @@ class ManagerApp extends React.Component {
               <ManagerAudit />
             </div>
             <div className="col-md-6">
-              <CustomerList queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
+              <TablesManager notiCustomer={this.notiCustomer.bind(this)} queues={this.state.queues}/>
+              <CustomerList queueId={this.state.queueId} queues={this.state.queues} addCustomer={this.addToQueue.bind(this)} removeCustomer={this.removeCustomer.bind(this)} notiCustomer={this.notiCustomer.bind(this)}/>
             </div>
           </div>
         </div>

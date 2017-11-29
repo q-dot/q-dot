@@ -8,11 +8,18 @@ const db = require('../database/index.js');
 const dbQuery = require('../controller/index.js');
 const dbManagerQuery = require('../controller/manager.js');
 const dummyData = require('../database/dummydata.js');
+const testData = require('../database/testData.js'); // remove when done testing
 const helpers = require('../helpers/helpers.js');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const passport = require('./passport.js');
+const Nexmo = require('nexmo');
+const request = require('request');
+const yelp = require('yelp-fusion');
+const nodemailer = require('nodemailer');
+const configs = require('./config/config.js');
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,10 +27,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 //checks if session already exists, if it does, adds req.session to req object
 app.use(session({
   store: new RedisStore({
-    host: process.env.REDISURL || '104.237.154.8',
+    host: process.env.REDISURL || '107.170.208.112',
     port: process.env.REDISPORT || 6379
   }),
   secret: process.env.SESSIONSECRET || 'nyancat',
+  saveuninitialized: false,
   cookie: {
     maxAge: 18000000
   },
@@ -31,13 +39,29 @@ app.use(session({
   resave: false
 }));
 
+//Set up node mailer
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: configs.emailUsername + '@gmail.com',
+    pass: configs.emailPass
+  }
+});
+
+const nexmo = new Nexmo({
+  apiKey: configs.nexmoAPIKey,
+  apiSecret: configs.nexmoAPISecret
+});
+
 //these middlewares initialise passport and adds req.user to req object if user has aleady been authenticated
 app.use(passport.initialize());
 app.use(passport.session());
 
 //this is to check if manager is logged in, before using static middleware. MUST always be above express.static!
-app.get('/manager', (req, res, next) => {
 
+// TODO: add DB lookup to chain
+app.get('/manager', (req, res, next) => {
+  console.log('GET manager');
   if (req.user) {
     console.log('logged in');
     next();
@@ -57,11 +81,21 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
+  console.log('Redirecting a customer');
   if (req.session.queueInfo) {
     res.redirect(`/customer/queueinfo?queueId=${req.session.queueInfo.queueId}`);
   } else {
     res.redirect('/customer');
   }
+});
+
+app.get('/endsession', (req, res) => {
+  console.log('End session requested!', req.session);
+  req.session.destroy((err) => {
+    console.log('destroy session');
+    res.cookie('qsessionid', '', { expires: new Date() });
+    res.send();
+  });
 });
 
 //get info for one restaurant or all restaurants
@@ -97,19 +131,25 @@ app.post('/dummydata', (req, res) => {
 
 //add a customer to the queue at a restaurant
 app.post('/queues', (req, res) => {
-  console.log('req body', req.body);
+
+  console.log('POST to queues: ', req.body);
   if (!req.body.name || !req.body.mobile || !req.body.restaurantId
       || !req.body.size) {
+
     res.status(400).send('Bad Request');
   } else {
     dbQuery.addToQueue(req.body)
       .then(response => {
+        console.log('res from adding to queue db: ', response);
         const result = {
           name: helpers.nameFormatter(req.body.name),
           mobile: helpers.phoneNumberFormatter(req.body.mobile)
         };
         if (req.body.email) {
           result.email = req.body.email;
+        }
+        if (req.body.address) {
+          result.address = req.body.address;
         }
         result.queueId = response.queueId;
         result.size = response.size;
@@ -118,8 +158,11 @@ app.post('/queues', (req, res) => {
         result.wait = response.wait;
         result.queueInFrontList = response.queueList;
         req.session.queueInfo = result;
+        console.log('result from server: ', result);
         res.send(result);
         //automatically update manager side client
+        // this just sends the same id back
+        console.log('sending back to client rest id: ', req.body.restaurantId);
         socketUpdateManager(req.body.restaurantId);
       })
       .catch(err => {
@@ -153,6 +196,7 @@ app.get('/queues', (req, res) => {
     dbQuery.getCustomerInfo(req.query.queueId)
       .then(partialResults => {
         results.name = partialResults.customer.name;
+        results.address = partialResults.customer.address;
         results.mobile = partialResults.customer.mobile;
         results.email = partialResults.customer.email;
         results.queueId = partialResults.id;
@@ -196,7 +240,11 @@ app.put('/queues', (req, res) => {
 //login a manager for a restaurant
 app.post('/managerlogin', passport.authenticate('local'), (req, res) => {
   dbManagerQuery.addAuditHistory('LOGIN', req.user.id)
-    .then(results => res.send('/manager'));
+    .then(() => dbQuery.findRestaurauntByManager(req.user.id))
+    .then(results => {
+      console.log('found', results.dataValues.id);
+      res.send(`/manager?id=${results.dataValues.id}`);
+    });
 });
 
 //request for logout of manager page of a restaurant
@@ -205,21 +253,23 @@ app.get('/logout', (req, res) => {
     .then(results => {
       req.logout();
       res.redirect('/managerlogin');
+    })
+    .catch((err) => {
+      console.log('error adding audit hist', err);
     });
 });
 
+//this must have originally been for an existing manager adding another manager
+// to the same restaurant
 //add a new manager login for a restaurant
 app.post('/manager', (req, res) => {
-  if (req.user) {
-    if (!req.query.password || !req.query.username) {
-      res.sendStatus(400);
-    } else {
-      var passwordInfo = dbManagerQuery.genPassword(req.query.password, dbManagerQuery.genSalt());
-      dbManagerQuery.addManager(req.query.username, passwordInfo.passwordHash, passwordInfo.salt)
-        .then(results => res.send(results));
-    }
+  // if (req.user) {
+  if (!req.body.password || !req.body.username) {
+    res.sendStatus(400);
   } else {
-    res.sendStatus(401);
+    var passwordInfo = dbManagerQuery.genPassword(req.body.password, dbManagerQuery.genSalt());
+    dbManagerQuery.addManager(req.body.username, passwordInfo.passwordHash, passwordInfo.salt)
+      .then(results => res.send(results));
   }
 });
 
@@ -241,14 +291,63 @@ app.delete('/manager/history', (req, res) => {
   }
 });
 
+// need to add manager before restaurant b/c FK on restaurant
+app.post('/restaurants', (req, res) => {
+  var passwordInfo = dbManagerQuery.genPassword(req.body.manager.password, dbManagerQuery.genSalt());
+
+  dbManagerQuery.addManager(req.body.manager.username, passwordInfo.passwordHash, passwordInfo.salt)
+    .then((results) => {
+      managerId = results[0].dataValues.id;
+      restaurantInfo = req.body.restaurant;
+      restaurantInfo.managerId = managerId;
+      dbQuery.addRestaurant(restaurantInfo);
+    })
+    .then((results) => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log('Error POST /restaurants ', err);
+      res.sendStatus(401);
+    });
+});
+
+// *** YELP ***
+app.post('/yelp', (req, res) => {
+
+  yelp.accessToken(configs.YELP_CLIENT_ID, configs.YELP_SECRET)
+    .then(response => {
+      token = response.jsonBody.access_token;
+      client = yelp.client(token);
+
+      client.search({
+        term: req.body.query,
+        location: req.body.location
+      })
+        .then(result => {
+          res.send(result.jsonBody.businesses);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    })
+    .catch(e => {
+      console.log(e);
+    });
+});
+
+app.get('/map', (req, res) => {
+
+  request(`https://maps.googleapis.com/maps/api/directions/json?origin=${req.query.user}&destination=${req.query.restaurant}`, function (error, response, body) {
+    if (error) { console.error(error); }
+    console.log('this is data from server: ', body);
+    res.json(body);
+  });
+});
+
+
 server.listen(port, () => {
   console.log(`(>^.^)> Server now listening on ${port}!`);
 });
-
-// socket io cant use express listen
-// app.listen(port, () => {
-//   console.log(`(>^.^)> Server now listening on ${port}!`);
-// });
 
 let queueMap = {};// queueId: socketId
 let managerMap = {};// restaurantId: socketId
@@ -266,8 +365,35 @@ io.on('connection', (socket) => {
     managerMap[restaurantId] = socket.id;
   });
 
-  socket.on('noti customer', (queueId) => {
+  socket.on('noti customer', (queueId, placeName, customer) => {
     if (queueMap[queueId]) {
+      // console.log('A customer is to be notified for their booking at', placeName);
+      let mailOptions = {
+        from: configs.emailUsername + '@gmail.com',
+        to: customer.email,
+        subject: 'Your table booked at ' + placeName + ' is ready!',
+        text: 'Hello ' + customer.name + '!\n\nThe table you booked with Q. is now ready for you. We hope you enjoy your dining experience at '
+          + placeName + '\n\nBon Appétit,\nQ.'
+      };
+
+      //Don't even try to text if it's not valid format with country code. only works for USA
+      console.log('unfiltered mobile:', customer.mobile);
+      let phoneToUse = helpers.filterPhoneForNexmo(customer.mobile);
+      console.log(phoneToUse, 'should get an SMS. It has length', phoneToUse.length);
+      if (phoneToUse.length === 11) {
+        helpers.sendSMS(nexmo, configs.virtualNumber, phoneToUse, placeName);
+      } else if (phoneToUse.length === 10) {
+        helpers.sendSMS(nexmo, configs.virtualNumber, '1' + phoneToUse, placeName);
+      }
+
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
       io.to(queueMap[queueId]).emit('noti', 'your table is ready!');
     }
   });
@@ -285,4 +411,3 @@ const socketUpdateManager = (restaurantId) => {
     io.to(managerMap[restaurantId]).emit('update', 'queue changed');
   }
 };
-
